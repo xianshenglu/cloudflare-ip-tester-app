@@ -1,15 +1,15 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 import TestPage from "../components/TestPage";
-import { Text, View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
+import { Text, View } from "../components/Themed";
+import { RootTabScreenProps } from "../types";
 
-export default function TabOneScreen({
+export default function TestRunScreen({
   navigation,
-}: RootTabScreenProps<"TabOne">) {
+}: RootTabScreenProps<"TestRun">) {
   return (
     <View style={{ ...styles.container }}>
-      <TestPage path="/screens/TabOneScreen.tsx" />
+      <TestPage path="/screens/TestRunScreen.tsx" />
     </View>
   );
 }
