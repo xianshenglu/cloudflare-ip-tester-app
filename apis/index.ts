@@ -79,8 +79,8 @@ const getCfNodeDownloadTestTime = async (ip: string) => {
   return result;
 };
 export const getCfNodesResponseTestTime = (
-  coCurrentNum: number,
-  totalCount: number
+  totalCount: number,
+  coCurrentNum: number
 ) => {
   const ipList = getRandomItems(CfIpListV4, totalCount);
   return from(ipList).pipe(
@@ -90,8 +90,8 @@ export const getCfNodesResponseTestTime = (
   );
 };
 export const getCfNodesDownloadTestTime = (
-  coCurrentNum: number,
-  totalCount: number
+  totalCount: number,
+  coCurrentNum: number
 ) => {
   const ipList = getRandomItems(CfIpListV4, totalCount);
   return from(ipList).pipe(

@@ -241,8 +241,11 @@ function useTableData() {
     });
   }
 
-  function startResponseSpeedTest() {
-    getCfNodesResponseTestTime(2, 10)
+  function startResponseSpeedTest(
+    totalCount: number,
+    coCurrentCount: number
+  ): void {
+    getCfNodesResponseTestTime(totalCount, coCurrentCount)
       .pipe(takeUntil(responseTestService.start()))
       .subscribe((result) => {
         const index = tableData.findIndex((item) => item.ip === result.ip);
@@ -259,8 +262,8 @@ function useTableData() {
         });
       });
   }
-  function startDownloadSpeedTest() {
-    getCfNodesDownloadTestTime(2, 50)
+  function startDownloadSpeedTest(totalCount: number, coCurrentCount: number) {
+    getCfNodesDownloadTestTime(totalCount, coCurrentCount)
       .pipe(takeUntil(downloadTestService.start()))
       .subscribe((result) => {
         const index = tableData.findIndex((item) => item.ip === result.ip);
@@ -288,6 +291,7 @@ function useTableData() {
 }
 export default function TestPage({ path }: { path: string }) {
   const [testIpCount, setTestIpCount] = useState<string>("20");
+  const [testIpCoCurrentCount, setTestIpCoCurrentCount] = useState<string>("5");
 
   const {
     tableData,
@@ -320,19 +324,42 @@ export default function TestPage({ path }: { path: string }) {
   return (
     <View style={styles.getStartedContainer}>
       <View style={styles.toolbar}>
-        <Button onPress={startResponseSpeedTest} title="TEST RESPOND " />
+        <Button
+          onPress={() =>
+            startResponseSpeedTest(
+              Number(testIpCount),
+              Number(testIpCoCurrentCount)
+            )
+          }
+          title="TEST RESPOND "
+        />
         <View style={{ marginRight: 10 }}></View>
-        <Button onPress={startDownloadSpeedTest} title="TEST DOWNLOAD" />
+        <Button
+          onPress={() =>
+            startDownloadSpeedTest(
+              Number(testIpCount),
+              Number(testIpCoCurrentCount)
+            )
+          }
+          title="TEST DOWNLOAD"
+        />
         <View style={{ marginRight: 10 }}></View>
         <Button onPress={onReset} title="RESET" />
       </View>
       <View style={styles.toolbar}>
-        <Text>test ip count</Text>
-        <View style={{ marginRight: 10 }}></View>
+        <Text>ip count</Text>
         <TextInput
           style={styles.input}
           onChangeText={setTestIpCount}
           value={testIpCount}
+          placeholder="test how many ips"
+          keyboardType="numeric"
+        />
+        <Text>coCurrent count</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={setTestIpCoCurrentCount}
+          value={testIpCoCurrentCount}
           placeholder="test how many ips"
           keyboardType="numeric"
         />
