@@ -8,7 +8,7 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "test": "jest --watchAll",
-    "build": "cd android && ./gradlew bundleRelease",
+    "build": "cd android && gradlew bundleRelease",
     "install-on-device": "npx react-native run-android --variant=release"
   },
   "jest": {
