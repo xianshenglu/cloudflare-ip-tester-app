@@ -10,6 +10,7 @@ import {
 import {
   getCfNodesDownloadTestTime,
   getCfNodesResponseTestTime,
+  getRandomCfIpList,
 } from "../apis";
 import Colors from "../constants/Colors";
 import { MonoText } from "./StyledText";
@@ -38,8 +39,35 @@ type TableHeaderColumn = {
 };
 function TableRow(props: { row: CfIpResponse; columns: TableHeaderColumn[] }) {
   const { row, columns } = props;
-  const meanRespond = row.hasError ? "Error" : row.meanRespond;
-  const meanDownloadSpeed = row.hasError ? "Error" : row.meanDownloadSpeed;
+  const meanRespondSpeedMap: Record<
+    // @ts-ignore
+    CfIpResponse["responseTestStatus"],
+    number | string | undefined
+  > = {
+    UNINITIALIZED: "",
+    SUCCESS: row.meanRespond,
+    ERROR: "Error",
+    PENDING: "...",
+  };
+  // @ts-ignore
+
+  let meanRespond = meanRespondSpeedMap[row.responseTestStatus];
+
+  const meanDownloadSpeedMap: Record<
+    // @ts-ignore
+
+    CfIpResponse["speedTestStatus"],
+    number | string | undefined
+  > = {
+    UNINITIALIZED: "",
+    SUCCESS: row.meanDownloadSpeed,
+    ERROR: "Error",
+    PENDING: "...",
+  };
+  // @ts-ignore
+
+  let meanDownloadSpeed = meanDownloadSpeedMap[row.speedTestStatus];
+
   return (
     <View
       style={{
@@ -83,7 +111,10 @@ function TableRow(props: { row: CfIpResponse; columns: TableHeaderColumn[] }) {
           ...styles.tableCell,
         }}
       >
-        <Text>{meanDownloadSpeed} MB/S</Text>
+        <Text>
+          {meanDownloadSpeed}{" "}
+          {typeof meanDownloadSpeed === "number" ? "MB/S" : ""}
+        </Text>
       </View>
     </View>
   );
@@ -242,11 +273,11 @@ function useTableData() {
   }
 
   function startResponseSpeedTest(
-    totalCount: number,
+    ipList: string[],
     coCurrentCount: number,
     testUrl: string
   ): void {
-    getCfNodesResponseTestTime(totalCount, coCurrentCount, testUrl)
+    getCfNodesResponseTestTime(ipList, coCurrentCount, testUrl)
       .pipe(takeUntil(responseTestService.start()))
       .subscribe((result) => {
         const index = tableData.findIndex((item) => item.ip === result.ip);
@@ -254,6 +285,7 @@ function useTableData() {
           setTableData((prevTableData) => {
             const newTableData = prevTableData.slice();
             newTableData[index].meanRespond = result.meanRespond;
+            newTableData[index].responseTestStatus = result.responseTestStatus;
             return newTableData;
           });
           return;
@@ -264,11 +296,11 @@ function useTableData() {
       });
   }
   function startDownloadSpeedTest(
-    totalCount: number,
+    ipList: string[],
     coCurrentCount: number,
     testUrl: string
   ) {
-    getCfNodesDownloadTestTime(totalCount, coCurrentCount, testUrl)
+    getCfNodesDownloadTestTime(ipList, coCurrentCount, testUrl)
       .pipe(takeUntil(downloadTestService.start()))
       .subscribe((result) => {
         const index = tableData.findIndex((item) => item.ip === result.ip);
@@ -276,6 +308,8 @@ function useTableData() {
           setTableData((prevTableData) => {
             const newTableData = prevTableData.slice();
             newTableData[index].meanDownloadSpeed = result.meanDownloadSpeed;
+            newTableData[index].speedTestStatus = result.speedTestStatus;
+
             return newTableData;
           });
           return;
@@ -285,6 +319,24 @@ function useTableData() {
         });
       });
   }
+  function getSelectedIpList() {
+    return tableData.map((o) => o.ip);
+  }
+  function initTableData(ipList: string[]) {
+    setTableData(() => {
+      const newTableData: CfIpResponse[] = ipList.map((ip) => {
+        return {
+          ip,
+          hasError: false,
+          meanRespond: 0,
+          responseTestStatus: "UNINITIALIZED",
+          speedTestStatus: "UNINITIALIZED",
+          meanDownloadSpeed: 0,
+        };
+      });
+      return newTableData;
+    });
+  }
   return {
     tableData,
     setTableData,
@@ -292,10 +344,18 @@ function useTableData() {
     sortTableData,
     startResponseSpeedTest,
     startDownloadSpeedTest,
+    getSelectedIpList,
+    initTableData,
   };
 }
-export default function TestPage({ path }: { path: string }) {
+function useTestIpCount() {
   const [testIpCount, setTestIpCount] = useState<string>("20");
+
+  const getIpList = () => getRandomCfIpList(Number(testIpCount));
+  return { testIpCount, setTestIpCount, getIpList };
+}
+export default function TestPage({ path }: { path: string }) {
+  const { testIpCount, setTestIpCount, getIpList } = useTestIpCount();
   const [testIpCoCurrentCount, setTestIpCoCurrentCount] = useState<string>("5");
   const [testUrl, setTestUrl] = useState<string>(
     // "http://cachefly.cachefly.net/200mb.test"
@@ -309,6 +369,8 @@ export default function TestPage({ path }: { path: string }) {
     sortTableData,
     startResponseSpeedTest,
     startDownloadSpeedTest,
+    getSelectedIpList,
+    initTableData,
   } = useTableData();
 
   const {
@@ -322,6 +384,7 @@ export default function TestPage({ path }: { path: string }) {
     downloadTestService.stop();
     resetTableData();
     resetTableHeader();
+    initTableData(getIpList());
   }
   function onSort(
     colId: TableHeaderColumn["id"],
@@ -330,14 +393,20 @@ export default function TestPage({ path }: { path: string }) {
     changeTableHeadersSortType(colId, sortType);
     sortTableData(colId, sortType);
   }
+  function onTestIpCountChange(v: string) {
+    setTestIpCount(v);
+    initTableData(getIpList());
+  }
+  console.log(tableData.slice(0, 1));
 
+  // initTableData(getIpList());
   return (
     <View style={styles.getStartedContainer}>
       <View style={styles.toolbar}>
         <Button
           onPress={() =>
             startResponseSpeedTest(
-              Number(testIpCount),
+              getSelectedIpList(),
               Number(testIpCoCurrentCount),
               testUrl
             )
@@ -348,7 +417,7 @@ export default function TestPage({ path }: { path: string }) {
         <Button
           onPress={() =>
             startDownloadSpeedTest(
-              Number(testIpCount),
+              getSelectedIpList(),
               Number(testIpCoCurrentCount),
               testUrl
             )
@@ -362,7 +431,7 @@ export default function TestPage({ path }: { path: string }) {
         <Text>ip count</Text>
         <TextInput
           style={styles.input}
-          onChangeText={setTestIpCount}
+          onChangeText={onTestIpCountChange}
           value={testIpCount}
           placeholder="test how many ips"
           keyboardType="numeric"

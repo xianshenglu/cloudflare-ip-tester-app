@@ -26,7 +26,7 @@ const getCfResponseTestFile = (ip: string, testUrl: string) => {
     Referer: oldUrl.toString(),
     Origin: oldUrl.origin,
   };
-  console.log(url, headers);
+  // console.log(url, headers);
 
   return axios.request({
     url,
@@ -103,11 +103,10 @@ const getCfNodeDownloadTestTime = async (ip: string, testUrl: string) => {
   return result;
 };
 export const getCfNodesResponseTestTime = (
-  totalCount: number,
+  ipList: string[],
   coCurrentNum: number,
   testUrl: string
 ) => {
-  const ipList = getRandomItems(CfIpListV4, totalCount);
   return from(ipList).pipe(
     mergeMap((ip) => {
       return getCfNodeResponseTestTime(ip, testUrl);
@@ -115,14 +114,17 @@ export const getCfNodesResponseTestTime = (
   );
 };
 export const getCfNodesDownloadTestTime = (
-  totalCount: number,
+  ipList: string[],
   coCurrentNum: number,
   testUrl: string
 ) => {
-  const ipList = getRandomItems(CfIpListV4, totalCount);
   return from(ipList).pipe(
     mergeMap((ip) => {
       return getCfNodeDownloadTestTime(ip, testUrl);
     }, coCurrentNum)
   );
+};
+export const getRandomCfIpList = (totalCount: number) => {
+  const ipList = getRandomItems(CfIpListV4, totalCount);
+  return ipList;
 };
