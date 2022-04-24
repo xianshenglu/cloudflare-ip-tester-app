@@ -14,7 +14,7 @@ import {
 import Colors from "../constants/Colors";
 import { MonoText } from "./StyledText";
 import { Text, View } from "./Themed";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Subject, takeUntil } from "rxjs";
@@ -168,8 +168,7 @@ function TableHeader(props: {
     </View>
   );
 }
-export default function TestPage({ path }: { path: string }) {
-  const initialTableData: CfIpResponse[] = [];
+function useTableHeader() {
   const initialTableHeaderCols: TableHeaderColumn[] = [
     { id: "ip", label: "IP", width: 60, sort: "default" },
     { id: "col", label: "Col", width: 20, sort: "default" },
@@ -186,12 +185,61 @@ export default function TestPage({ path }: { path: string }) {
       sort: "default",
     },
   ];
-
-  const [tableData, setTableData] = useState<CfIpResponse[]>(initialTableData);
   const [tableHeaders, setTableHeaders] = useState<TableHeaderColumn[]>(
     initialTableHeaderCols
   );
-  const [testIpCount, setTestIpCount] = useState<string>("20");
+  function changeTableHeadersSortType(
+    id: TableHeaderColumn["id"],
+    sortType: TableHeaderColumn["sort"]
+  ): void {
+    setTableHeaders((prevTableHeaderCols) => {
+      const result = prevTableHeaderCols.map((item) => {
+        const targetSortType = item.id === id ? sortType : "default";
+        return {
+          ...item,
+          sort: targetSortType,
+        };
+      });
+
+      return result;
+    });
+  }
+  function reset() {
+    setTableHeaders(initialTableHeaderCols);
+  }
+
+  return { tableHeaders, setTableHeaders, reset, changeTableHeadersSortType };
+}
+function useTableData() {
+  const initialTableData: CfIpResponse[] = [];
+
+  const [tableData, setTableData] = useState<CfIpResponse[]>(initialTableData);
+  function reset() {
+    setTableData([]);
+  }
+  function sortTableData(
+    colId: TableHeaderColumn["id"],
+    sortType: TableHeaderColumn["sort"]
+  ) {
+    setTableData((prevTableData) => {
+      const sortColId = sortType === "default" ? "ip" : colId;
+      const result = prevTableData.slice().sort((itemA, itemB) => {
+        if (itemA[sortColId] && itemB[sortColId]) {
+          const isLess = (itemA[sortColId] as any) < (itemB[sortColId] as any);
+          if (
+            (isLess && sortType === "ascending") ||
+            (!isLess && sortType === "descending")
+          ) {
+            return -1;
+          }
+          return 1;
+        }
+        return 0;
+      });
+
+      return result;
+    });
+  }
 
   function startResponseSpeedTest() {
     getCfNodesResponseTestTime(2, 10)
@@ -229,53 +277,46 @@ export default function TestPage({ path }: { path: string }) {
         });
       });
   }
+  return {
+    tableData,
+    setTableData,
+    reset,
+    sortTableData,
+    startResponseSpeedTest,
+    startDownloadSpeedTest,
+  };
+}
+export default function TestPage({ path }: { path: string }) {
+  const [testIpCount, setTestIpCount] = useState<string>("20");
+
+  const {
+    tableData,
+    reset: resetTableData,
+    sortTableData,
+    startResponseSpeedTest,
+    startDownloadSpeedTest,
+  } = useTableData();
+
+  const {
+    tableHeaders,
+    reset: resetTableHeader,
+    changeTableHeadersSortType,
+  } = useTableHeader();
 
   function onReset() {
     responseTestService.stop();
     downloadTestService.stop();
-    setTableData([]);
-    setTableHeaders(initialTableHeaderCols);
+    resetTableData();
+    resetTableHeader();
   }
   function onSort(
     colId: TableHeaderColumn["id"],
     sortType: TableHeaderColumn["sort"]
   ) {
     changeTableHeadersSortType(colId, sortType);
-    setTableData((prevTableData) => {
-      const sortColId = sortType === "default" ? "ip" : colId;
-      const result = prevTableData.slice().sort((itemA, itemB) => {
-        if (itemA[sortColId] && itemB[sortColId]) {
-          const isLess = (itemA[sortColId] as any) < (itemB[sortColId] as any);
-          if (
-            (isLess && sortType === "ascending") ||
-            (!isLess && sortType === "descending")
-          ) {
-            return -1;
-          }
-          return 1;
-        }
-        return 0;
-      });
-
-      return result;
-    });
+    sortTableData(colId, sortType);
   }
-  function changeTableHeadersSortType(
-    id: TableHeaderColumn["id"],
-    sortType: TableHeaderColumn["sort"]
-  ): void {
-    setTableHeaders((prevTableHeaderCols) => {
-      const result = prevTableHeaderCols.map((item) => {
-        const targetSortType = item.id === id ? sortType : "default";
-        return {
-          ...item,
-          sort: targetSortType,
-        };
-      });
 
-      return result;
-    });
-  }
   return (
     <View style={styles.getStartedContainer}>
       <View style={styles.toolbar}>
