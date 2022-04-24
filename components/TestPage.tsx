@@ -83,7 +83,7 @@ function TableRow(props: { row: CfIpResponse; columns: TableHeaderColumn[] }) {
           ...styles.tableCell,
         }}
       >
-        <Text>{meanDownloadSpeed}</Text>
+        <Text>{meanDownloadSpeed} MB/S</Text>
       </View>
     </View>
   );
@@ -243,9 +243,10 @@ function useTableData() {
 
   function startResponseSpeedTest(
     totalCount: number,
-    coCurrentCount: number
+    coCurrentCount: number,
+    testUrl: string
   ): void {
-    getCfNodesResponseTestTime(totalCount, coCurrentCount)
+    getCfNodesResponseTestTime(totalCount, coCurrentCount, testUrl)
       .pipe(takeUntil(responseTestService.start()))
       .subscribe((result) => {
         const index = tableData.findIndex((item) => item.ip === result.ip);
@@ -262,8 +263,12 @@ function useTableData() {
         });
       });
   }
-  function startDownloadSpeedTest(totalCount: number, coCurrentCount: number) {
-    getCfNodesDownloadTestTime(totalCount, coCurrentCount)
+  function startDownloadSpeedTest(
+    totalCount: number,
+    coCurrentCount: number,
+    testUrl: string
+  ) {
+    getCfNodesDownloadTestTime(totalCount, coCurrentCount, testUrl)
       .pipe(takeUntil(downloadTestService.start()))
       .subscribe((result) => {
         const index = tableData.findIndex((item) => item.ip === result.ip);
@@ -292,6 +297,11 @@ function useTableData() {
 export default function TestPage({ path }: { path: string }) {
   const [testIpCount, setTestIpCount] = useState<string>("20");
   const [testIpCoCurrentCount, setTestIpCoCurrentCount] = useState<string>("5");
+  const [testUrl, setTestUrl] = useState<string>(
+    // "http://cachefly.cachefly.net/200mb.test"
+    // "http://v2ray.xianshenglu.xyz"
+    "http://ip.flares.cloud/img/m.webp"
+  );
 
   const {
     tableData,
@@ -328,7 +338,8 @@ export default function TestPage({ path }: { path: string }) {
           onPress={() =>
             startResponseSpeedTest(
               Number(testIpCount),
-              Number(testIpCoCurrentCount)
+              Number(testIpCoCurrentCount),
+              testUrl
             )
           }
           title="TEST RESPOND "
@@ -338,7 +349,8 @@ export default function TestPage({ path }: { path: string }) {
           onPress={() =>
             startDownloadSpeedTest(
               Number(testIpCount),
-              Number(testIpCoCurrentCount)
+              Number(testIpCoCurrentCount),
+              testUrl
             )
           }
           title="TEST DOWNLOAD"
@@ -364,6 +376,16 @@ export default function TestPage({ path }: { path: string }) {
           keyboardType="numeric"
         />
       </View>
+      <View style={styles.toolbar}>
+        <Text>test url</Text>
+        <TextInput
+          style={{ ...styles.input, flex: 1 }}
+          onChangeText={setTestUrl}
+          value={testUrl}
+          placeholder="test how many ips"
+          keyboardType="numeric"
+        />
+      </View>
 
       <TableHeader onSort={onSort} cols={tableHeaders} />
       <TableRows rows={tableData} columns={tableHeaders} />
@@ -382,10 +404,10 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    margin: 12,
     borderWidth: 1,
     padding: 10,
     width: 60,
+    marginHorizontal: 10,
   },
   toolbar: {
     flexDirection: "row",
