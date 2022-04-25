@@ -136,7 +136,4 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 10,
   },
-  button: {
-    fontSize: 12,
-  },
 });
