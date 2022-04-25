@@ -55,7 +55,6 @@ export default function TestPage({ path }: { path: string }) {
     initTableData(getIpList());
   }
 
-  // initTableData(getIpList());
   return (
     <View style={styles.getStartedContainer}>
       <View style={styles.toolbar}>
@@ -81,7 +80,7 @@ export default function TestPage({ path }: { path: string }) {
           title="TEST DOWNLOAD"
         />
         <View style={{ marginRight: 10 }}></View>
-        <Button onPress={onReset} title="RESET" />
+        <Button onPress={onReset} title="START" />
       </View>
       <View style={styles.toolbar}>
         <Text>ip count</Text>
@@ -139,5 +138,8 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     alignItems: "center",
     marginBottom: 10,
+  },
+  button: {
+    fontSize: 12,
   },
 });
