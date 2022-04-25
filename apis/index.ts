@@ -8,17 +8,15 @@ import { CfIpResponse } from "@/screens/TestRunScreen/model";
 const getTargetUrlConfig = (ip: string, testUrl: string) => {
   const oldUrl = urlParse(testUrl, true);
   const newUrl = urlParse(testUrl, true);
-  // @ts-ignore
-  newUrl.host = ip;
+  newUrl.set("host", ip);
   return {
-    url: newUrl.toString(),
     newUrl,
     host: oldUrl.host,
     oldUrl,
   };
 };
 const getCfResponseTestFile = (ip: string, testUrl: string) => {
-  const { url, host, oldUrl } = getTargetUrlConfig(ip, testUrl);
+  const { host, oldUrl, newUrl } = getTargetUrlConfig(ip, testUrl);
   const headers = {
     "User-Agent":
       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36",
@@ -26,10 +24,10 @@ const getCfResponseTestFile = (ip: string, testUrl: string) => {
     Referer: oldUrl.toString(),
     Origin: oldUrl.origin,
   };
-  // console.log(url, headers);
+  // console.log(host, newUrl.toString());
 
   return axios.request({
-    url,
+    url: newUrl.toString(),
     headers,
     params: {
       v: Math.random(),
@@ -39,7 +37,7 @@ const getCfResponseTestFile = (ip: string, testUrl: string) => {
 };
 
 const getCfDownloadTestFile = (ip: string, testUrl: string) => {
-  const { url, host, oldUrl } = getTargetUrlConfig(ip, testUrl);
+  const { host, oldUrl, newUrl } = getTargetUrlConfig(ip, testUrl);
   const headers = {
     "User-Agent":
       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36",
@@ -48,7 +46,7 @@ const getCfDownloadTestFile = (ip: string, testUrl: string) => {
     Origin: oldUrl.origin,
   };
   return axios.request<File>({
-    url,
+    url: newUrl.toString(),
     headers,
     params: {
       v: Math.random(),
