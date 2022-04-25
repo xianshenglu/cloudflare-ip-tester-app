@@ -18,7 +18,7 @@ export function useTableData() {
 
   const [tableData, setTableData] = useState<CfIpResponse[]>(initialTableData);
   function reset() {
-    setTableData([]);
+    setTableData(() => []);
   }
 
   function sortTableData(

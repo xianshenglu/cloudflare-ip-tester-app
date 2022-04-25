@@ -51,7 +51,7 @@ export default function TestPage({ path }: { path: string }) {
     sortTableData(colId, sortType);
   }
   function onTestIpCountChange(v: string) {
-    setTestIpCount(v);
+    setTestIpCount(() => v);
     initTableData(getIpList());
   }
 
@@ -88,15 +88,13 @@ export default function TestPage({ path }: { path: string }) {
           style={styles.input}
           onChangeText={onTestIpCountChange}
           value={testIpCount}
-          placeholder="test how many ips"
           keyboardType="numeric"
         />
         <Text>coCurrent count</Text>
         <TextInput
           style={styles.input}
-          onChangeText={setTestIpCoCurrentCount}
+          onChangeText={(val) => setTestIpCoCurrentCount(() => val)}
           value={testIpCoCurrentCount}
-          placeholder="test how many ips"
           keyboardType="numeric"
         />
       </View>
@@ -104,10 +102,8 @@ export default function TestPage({ path }: { path: string }) {
         <Text>test url</Text>
         <TextInput
           style={{ ...styles.input, flex: 1 }}
-          onChangeText={setTestUrl}
+          onChangeText={(val) => setTestUrl(() => val)}
           value={testUrl}
-          placeholder="test how many ips"
-          keyboardType="numeric"
         />
       </View>
 

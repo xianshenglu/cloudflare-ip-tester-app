@@ -76,8 +76,13 @@ export function useTableHeader() {
     });
   }
   function reset() {
-    setTableHeaders(initialTableHeaderCols);
+    setTableHeaders(() => initialTableHeaderCols);
   }
 
-  return { tableHeaders, setTableHeaders, reset, changeTableHeadersSortType };
+  return {
+    tableHeaders,
+    setTableHeaders,
+    reset,
+    changeTableHeadersSortType,
+  };
 }
