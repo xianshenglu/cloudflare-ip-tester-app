@@ -16,7 +16,8 @@ export default function TestPage({ path }: { path: string }) {
   const [testUrl, setTestUrl] = useState<string>(
     // "http://cachefly.cachefly.net/200mb.test"
     // "http://v2ray.xianshenglu.xyz"
-    "http://ip.flares.cloud/img/m.webp"
+    // "http://ip.flares.cloud/img/l.webp"
+    `https://speed.cloudflare.com/__down?bytes=${10 * 1024 * 1024}`
   );
 
   const {
@@ -53,7 +54,6 @@ export default function TestPage({ path }: { path: string }) {
     setTestIpCount(v);
     initTableData(getIpList());
   }
-  console.log(tableData.slice(0, 1));
 
   // initTableData(getIpList());
   return (

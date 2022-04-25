@@ -15,8 +15,11 @@ const getTargetUrlConfig = (ip: string, testUrl: string) => {
     oldUrl,
   };
 };
-const getCfResponseTestFile = (ip: string, testUrl: string) => {
+const getCfResponseTestFile = (ip: string) => {
+  const testUrl = `https://speed.cloudflare.com/__down`;
   const { host, oldUrl, newUrl } = getTargetUrlConfig(ip, testUrl);
+  newUrl.set("host", ip);
+  newUrl.set("protocol", "http:");
   const headers = {
     "User-Agent":
       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36",
@@ -31,6 +34,7 @@ const getCfResponseTestFile = (ip: string, testUrl: string) => {
     headers,
     params: {
       v: Math.random(),
+      bytes: 0,
     },
     timeout: 5 * 1000,
   });
@@ -45,6 +49,7 @@ const getCfDownloadTestFile = (ip: string, testUrl: string) => {
     Referer: oldUrl.toString(),
     Origin: oldUrl.origin,
   };
+  newUrl.set("protocol", "http:");
   return axios.request<File>({
     url: newUrl.toString(),
     headers,
@@ -64,7 +69,7 @@ const getCfNodeResponseTestTime = async (ip: string, testUrl: string) => {
     responseTestStatus: "PENDING",
   };
   try {
-    const response = await getCfResponseTestFile(ip, testUrl);
+    const response = await getCfResponseTestFile(ip);
 
     result.responseTestStatus = "SUCCESS";
     result.meanRespond = Date.now() - startTime;
