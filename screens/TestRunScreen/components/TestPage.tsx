@@ -51,8 +51,9 @@ export default function TestPage({ path }: { path: string }) {
     sortTableData(colId, sortType);
   }
   function onTestIpCountChange(v: string) {
-    setTestIpCount(() => v);
-    initTableData(getIpList());
+    setTestIpCount(() => {
+      return v;
+    });   
   }
 
   return (
