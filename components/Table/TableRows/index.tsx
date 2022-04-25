@@ -30,7 +30,7 @@ function TableRow<Row, Column extends TableHeaderColumn>(props: {
               ...styles.tableCell,
             }}
           >
-            <Text>{rowText}</Text>
+            <Text selectable={true}>{rowText}</Text>
           </View>
         );
       })}
