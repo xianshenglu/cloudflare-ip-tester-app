@@ -3,7 +3,6 @@ import { useState } from "react";
 export function useTableHeader() {
   const initialTableHeaderCols: MyTableHeaderColumn[] = [
     { id: "ip", label: "IP", width: 60, sort: "default" },
-    { id: "col", label: "Col", width: 20, sort: "default" },
     {
       id: "meanRespond",
       label: "Mean Respond Time",

@@ -52,14 +52,6 @@ export function useTableData() {
         );
         return ret;
       }
-      if (sortColId === "col") {
-        const ret = sortByString<CfIpResponse>(
-          prevTableData,
-          sortType,
-          (item) => item.col as string
-        );
-        return ret;
-      }
 
       return prevTableData.slice();
     });
