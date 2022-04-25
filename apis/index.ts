@@ -1,10 +1,10 @@
-import { getRandomItems } from "./../utils/index";
-import { CfIpResponse } from "../components/TestPage";
+import { getRandomItems } from "@/utils/index";
 import axios from "axios";
 import { from, mergeMap } from "rxjs";
-import { CfIpListV4 } from "../constants/CfIpListV4";
+import { CfIpListV4 } from "@/constants/CfIpListV4";
 import urlParse from "url-parse";
 import { round } from "lodash-es";
+import { CfIpResponse } from "@/screens/TestRunScreen/model";
 const getTargetUrlConfig = (ip: string, testUrl: string) => {
   const oldUrl = urlParse(testUrl, true);
   const newUrl = urlParse(testUrl, true);
@@ -63,7 +63,6 @@ const getCfNodeResponseTestTime = async (ip: string, testUrl: string) => {
   const result: CfIpResponse = {
     ip,
     meanRespond: 0,
-    hasError: false,
     responseTestStatus: "PENDING",
   };
   try {
@@ -74,7 +73,6 @@ const getCfNodeResponseTestTime = async (ip: string, testUrl: string) => {
   } catch (error) {
     console.log(error, "response error");
 
-    result.hasError = true;
     result.responseTestStatus = "ERROR";
   }
   return result;
@@ -84,7 +82,6 @@ const getCfNodeDownloadTestTime = async (ip: string, testUrl: string) => {
   const result: CfIpResponse = {
     ip,
     meanDownloadSpeed: 0,
-    hasError: false,
     speedTestStatus: "PENDING",
   };
   try {
@@ -97,7 +94,6 @@ const getCfNodeDownloadTestTime = async (ip: string, testUrl: string) => {
     result.meanDownloadSpeed = round(fileSize / time, 2);
   } catch (error) {
     console.log("download fail", error);
-    result.hasError = true;
     result.speedTestStatus = "ERROR";
   }
   return result;

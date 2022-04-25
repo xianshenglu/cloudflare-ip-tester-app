@@ -14,7 +14,7 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
-import TestRunScreen from "../screens/TestRunScreen";
+import TestRunScreen from "../screens/TestRunScreen/index";
 import ConfigScreen from "../screens/TestConfigScreen";
 import {
   RootStackParamList,

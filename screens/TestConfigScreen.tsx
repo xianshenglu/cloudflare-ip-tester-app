@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
 
-import TestPage from "../components/TestPage";
 import { Text, View } from "../components/Themed";
 
 export default function TestConfigScreen() {

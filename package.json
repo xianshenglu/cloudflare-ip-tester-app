@@ -44,6 +44,7 @@
     "@types/react": "~17.0.21",
     "@types/react-native": "~0.64.12",
     "@types/url-parse": "^1.4.8",
+    "babel-plugin-module-resolver": "^4.1.0",
     "jest": "^26.6.3",
     "jest-expo": "~44.0.1",
     "react-test-renderer": "17.0.1",
