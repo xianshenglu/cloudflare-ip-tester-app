@@ -27,15 +27,26 @@ export type CfIpResponse = {
   col?: string;
   meanDownloadSpeed?: number;
   hasError: boolean;
-  responseTestStatus?: "UNINITIALIZED" | "SUCCESS" | "ERROR" | "PENDING";
-  speedTestStatus?: "UNINITIALIZED" | "SUCCESS" | "ERROR" | "PENDING";
+  responseTestStatus?: `${RequestStatus}`;
+  speedTestStatus?: `${RequestStatus}`;
 };
+export enum SortType {
+  Ascending = "ascending",
+  Descending = "descending",
+  Default = "default",
+}
+export enum RequestStatus {
+  Uninitialized = "UNINITIALIZED",
+  Pending = "PENDING",
+  Success = "SUCCESS",
+  Error = "ERROR",
+}
 
 type TableHeaderColumn = {
   id: "ip" | "meanRespond" | "col" | "meanDownloadSpeed";
   label: string;
   width: number;
-  sort: "ascending" | "descending" | "default";
+  sort: `${SortType}`;
 };
 function TableRow(props: { row: CfIpResponse; columns: TableHeaderColumn[] }) {
   const { row, columns } = props;
@@ -241,6 +252,53 @@ function useTableHeader() {
 
   return { tableHeaders, setTableHeaders, reset, changeTableHeadersSortType };
 }
+function sortByNumber<T = unknown>(
+  list: T[],
+  sortType: `${SortType}`,
+  getValue: (arg: T) => any,
+  isInvalidValue: (arg: T) => boolean
+) {
+  const invalidValues = list.filter((item) => isInvalidValue(item));
+  const validValues = list.filter((item) => !isInvalidValue(item));
+  const validResult = validValues.sort((itemA, itemB) => {
+    const isAGreater = isInvalidValue(itemA);
+    if (isAGreater) {
+      return 1;
+    }
+    const isBGreater = isInvalidValue(itemB);
+    if (isBGreater) {
+      return -1;
+    }
+    return getValue(itemA) < getValue(itemB) ? -1 : 1;
+  });
+
+  if (sortType === SortType.Descending) {
+    validResult.reverse();
+  }
+  const result = validResult.concat(invalidValues);
+  return result;
+}
+function sortByIp<T = unknown>(
+  list: T[],
+  sortType: `${SortType}`,
+  getValue: (arg: T) => string
+) {
+  const result = sortByString(list, sortType, getValue);
+  return result;
+}
+function sortByString<T = unknown>(
+  list: T[],
+  sortType: `${SortType}`,
+  getValue: (arg: T) => string
+) {
+  const result = list.slice().sort((itemA, itemB) => {
+    return getValue(itemA) < getValue(itemB) ? -1 : 1;
+  });
+  if (sortType === SortType.Descending) {
+    result.reverse();
+  }
+  return result;
+}
 function useTableData() {
   const initialTableData: CfIpResponse[] = [];
 
@@ -248,27 +306,48 @@ function useTableData() {
   function reset() {
     setTableData([]);
   }
+
   function sortTableData(
-    colId: TableHeaderColumn["id"],
-    sortType: TableHeaderColumn["sort"]
+    sortColId: TableHeaderColumn["id"],
+    sortType: `${SortType}`
   ) {
     setTableData((prevTableData) => {
-      const sortColId = sortType === "default" ? "ip" : colId;
-      const result = prevTableData.slice().sort((itemA, itemB) => {
-        if (itemA[sortColId] && itemB[sortColId]) {
-          const isLess = (itemA[sortColId] as any) < (itemB[sortColId] as any);
-          if (
-            (isLess && sortType === "ascending") ||
-            (!isLess && sortType === "descending")
-          ) {
-            return -1;
-          }
-          return 1;
-        }
-        return 0;
-      });
+      if (sortType === SortType.Default) {
+        const ret = sortByIp(
+          prevTableData,
+          SortType.Ascending,
+          (item) => item.ip
+        );
+        return ret;
+      }
+      if (sortColId === "meanDownloadSpeed") {
+        const ret = sortByNumber<CfIpResponse>(
+          prevTableData,
+          sortType,
+          (item) => item.meanDownloadSpeed,
+          (item) => item.speedTestStatus !== RequestStatus.Success
+        );
+        return ret;
+      }
+      if (sortColId === "meanRespond") {
+        const ret = sortByNumber<CfIpResponse>(
+          prevTableData,
+          sortType,
+          (item) => item.meanRespond,
+          (item) => item.responseTestStatus !== RequestStatus.Success
+        );
+        return ret;
+      }
+      if (sortColId === "col") {
+        const ret = sortByString<CfIpResponse>(
+          prevTableData,
+          sortType,
+          (item) => item.col as string
+        );
+        return ret;
+      }
 
-      return result;
+      return prevTableData.slice();
     });
   }
 
