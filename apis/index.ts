@@ -1,6 +1,8 @@
+import { getInitialCfIpResponse } from "./../screens/TestRunScreen/utils/index";
+import { RequestStatus } from "@/typings/index";
 import { getRandomItems } from "@/utils/index";
 import axios from "axios";
-import { from, mergeMap } from "rxjs";
+import { bufferCount, concatMap, from, map, mergeMap } from "rxjs";
 import { CfIpListV4 } from "@/constants/CfIpListV4";
 import urlParse from "url-parse";
 import { round } from "lodash-es";
@@ -63,11 +65,9 @@ const getCfDownloadTestFile = (ip: string, testUrl: string) => {
 
 const getCfNodeResponseTestTime = async (ip: string, testUrl: string) => {
   const startTime = Date.now();
-  const result: CfIpResponse = {
-    ip,
-    respondTime: 0,
-    respondTestStatus: "PENDING",
-  };
+  const result: CfIpResponse = getInitialCfIpResponse(ip, {
+    respondTestStatus: RequestStatus.Pending,
+  });
   try {
     const response = await getCfResponseTestFile(ip);
 
@@ -82,11 +82,9 @@ const getCfNodeResponseTestTime = async (ip: string, testUrl: string) => {
 };
 const getCfNodeDownloadTestTime = async (ip: string, testUrl: string) => {
   const startTime = Date.now();
-  const result: CfIpResponse = {
-    ip,
-    downloadSpeed: 0,
-    downloadSpeedTestStatus: "PENDING",
-  };
+  const result: CfIpResponse = getInitialCfIpResponse(ip, {
+    downloadSpeedTestStatus: RequestStatus.Pending,
+  });
   try {
     await getCfResponseTestFile(ip);
     const response = await getCfDownloadTestFile(ip, testUrl);
@@ -106,9 +104,35 @@ export const getCfNodesResponseTestTime = (
   coCurrentNum: number,
   testUrl: string
 ) => {
+  let totalCount = 4;
   return from(ipList).pipe(
     mergeMap((ip) => {
-      return getCfNodeResponseTestTime(ip, testUrl);
+      return from(Array(totalCount).fill(ip)).pipe(
+        concatMap(() => getCfNodeResponseTestTime(ip, testUrl)),
+        bufferCount(totalCount),
+        map((responseList) => {
+          let successCount = 0;
+          let successRespondTime = 0;
+          responseList.forEach((response) => {
+            const isSuccess =
+              response.respondTestStatus === RequestStatus.Success;
+            if (!isSuccess) {
+              return;
+            }
+            successCount++;
+            successRespondTime += response.respondTime!;
+          });
+          return getInitialCfIpResponse(ip, {
+            respondTime: round(successRespondTime / successCount, 0),
+            respondTestStatus:
+              successCount === 0 ? RequestStatus.Error : RequestStatus.Success,
+            packetLossRate: round(
+              (100 * (totalCount - successCount)) / totalCount,
+              0
+            ),
+          });
+        })
+      );
     }, coCurrentNum)
   );
 };

@@ -6,8 +6,9 @@ export type CfIpResponse = {
   downloadSpeed?: number;
   respondTestStatus?: `${RequestStatus}`;
   downloadSpeedTestStatus?: `${RequestStatus}`;
+  packetLossRate: number;
 };
 
 export type MyTableHeaderColumn = TableHeaderColumn<
-  "ip" | "respondTime" | "downloadSpeed"
+  "ip" | "packetLossRate" | "respondTime" | "downloadSpeed"
 >;

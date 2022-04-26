@@ -52,6 +52,15 @@ export function useTableData() {
         );
         return ret;
       }
+      if (sortColId === "packetLossRate") {
+        const ret = sortByNumber<CfIpResponse>(
+          prevTableData,
+          sortType,
+          (item) => item.packetLossRate,
+          (item) => item.respondTestStatus !== RequestStatus.Success
+        );
+        return ret;
+      }
 
       return prevTableData.slice();
     });
@@ -70,6 +79,7 @@ export function useTableData() {
         if (index >= 0) {
           setTableData((prevTableData) => {
             const newTableData = prevTableData.slice();
+            newTableData[index].packetLossRate = result.packetLossRate;
             newTableData[index].respondTime = result.respondTime;
             newTableData[index].respondTestStatus = result.respondTestStatus;
             return newTableData;

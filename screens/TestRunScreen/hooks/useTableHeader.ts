@@ -1,8 +1,22 @@
 import { MyTableHeaderColumn, CfIpResponse } from "./../model";
 import { useState } from "react";
+import { RequestStatus } from "@/typings";
 export function useTableHeader() {
   const initialTableHeaderCols: MyTableHeaderColumn[] = [
     { id: "ip", label: "IP", width: 60, sort: "default" },
+    {
+      id: "packetLossRate",
+      label: "Loss Rate",
+      width: 40,
+      sort: "default",
+      // @ts-ignore
+      formatter(row: CfIpResponse) {
+        const isFinished =
+          row.respondTestStatus === RequestStatus.Success ||
+          row.respondTestStatus === RequestStatus.Error;
+        return isFinished ? `${row.packetLossRate}%` : "";
+      },
+    },
     {
       id: "respondTime",
       label: "Respond Time",

@@ -53,7 +53,8 @@ export function TableHeader(props: {
             <FontAwesome
               name={sortIconNameMap[column.sort]}
               size={12}
-              style={{ marginLeft: 5 }}
+              // tableCell padding not work, so use this
+              style={{ marginHorizontal: 3 }}
             />
           </Pressable>
         );
