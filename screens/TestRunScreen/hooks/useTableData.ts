@@ -1,3 +1,4 @@
+import { getInitialCfIpResponse } from "./../utils/index";
 import { CfIpResponse } from "@/screens/TestRunScreen/model";
 import { MyTableHeaderColumn } from "./../model";
 import {
@@ -123,13 +124,7 @@ export function useTableData() {
   function initTableData(ipList: string[]) {
     setTableData(() => {
       const newTableData: CfIpResponse[] = ipList.map((ip) => {
-        return {
-          ip,
-          respondTime: 0,
-          responseTestStatus: "UNINITIALIZED",
-          speedTestStatus: "UNINITIALIZED",
-          meanDownloadSpeed: 0,
-        };
+        return getInitialCfIpResponse(ip);
       });
       return newTableData;
     });
