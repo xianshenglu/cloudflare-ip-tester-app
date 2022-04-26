@@ -88,7 +88,7 @@ const getCfNodeDownloadTestTime = async (ip: string, testUrl: string) => {
     speedTestStatus: "PENDING",
   };
   try {
-    await getCfResponseTestFile(ip, testUrl);
+    await getCfResponseTestFile(ip);
     const response = await getCfDownloadTestFile(ip, testUrl);
     const { data: file } = response;
     result.speedTestStatus = "SUCCESS";
