@@ -20,6 +20,11 @@ const linking: LinkingOptions<RootStackParamList> = {
               TestRunScreen: "one",
             },
           },
+          TestStatistics: {
+            screens: {
+              TestStatisticsScreen: "three",
+            },
+          },
           TestConfig: {
             screens: {
               TestConfigScreen: "two",
