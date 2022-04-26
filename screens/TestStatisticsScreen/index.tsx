@@ -1,6 +1,8 @@
 import { StyleSheet } from "react-native";
 
 import { Text, View } from "@/components/Themed";
+import { StatisticsData } from "./components/StatisticsData";
+import { testStatisticsStore } from "@/store/TestStatistics";
 
 export default function TestConfigScreen() {
   return (
@@ -11,7 +13,7 @@ export default function TestConfigScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      {/* <TestPage path="/screens/TestConfigScreen.tsx" /> */}
+      <StatisticsData testStatisticsStore={testStatisticsStore} />
     </View>
   );
 }

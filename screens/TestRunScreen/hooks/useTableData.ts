@@ -13,6 +13,7 @@ import { sortByNumber } from "@/utils";
 import { sortByString } from "@/utils";
 import { responseTestService } from "@/services/ResponseTest.service";
 import { downloadTestService } from "@/services/DownloadTest.service";
+import { testStatisticsStore } from "@/store/TestStatistics";
 
 export function useTableData() {
   const initialTableData: CfIpResponse[] = [];
@@ -76,6 +77,7 @@ export function useTableData() {
     getCfNodesResponseTestTime(ipList, coCurrentCount, testUrl)
       .pipe(takeUntil(responseTestService.start()))
       .subscribe((result) => {
+        testStatisticsStore.addRecord(result);
         const index = tableData.findIndex((item) => item.ip === result.ip);
         if (index >= 0) {
           setTableData((prevTableData) => {
@@ -102,6 +104,7 @@ export function useTableData() {
       .pipe(takeUntil(downloadTestService.start()))
       .subscribe((result) => {
         const index = tableData.findIndex((item) => item.ip === result.ip);
+        testStatisticsStore.addRecord(result);
         if (index >= 0) {
           setTableData((prevTableData) => {
             const newTableData = prevTableData.slice();

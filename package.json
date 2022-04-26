@@ -29,6 +29,8 @@
     "expo-status-bar": "~1.2.0",
     "expo-web-browser": "~10.1.0",
     "lodash-es": "^4.17.21",
+    "mobx": "^6.5.0",
+    "mobx-react": "^7.3.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
