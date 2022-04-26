@@ -33,7 +33,7 @@ export function TableHeader(props: {
   > = {
     default: "ascending",
     ascending: "descending",
-    descending: "default",
+    descending: "ascending",
   };
 
   return (
