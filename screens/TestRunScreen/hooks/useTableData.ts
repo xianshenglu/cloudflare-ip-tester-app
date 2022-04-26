@@ -34,21 +34,21 @@ export function useTableData() {
         );
         return ret;
       }
-      if (sortColId === "meanDownloadSpeed") {
+      if (sortColId === "downloadSpeed") {
         const ret = sortByNumber<CfIpResponse>(
           prevTableData,
           sortType,
-          (item) => item.meanDownloadSpeed,
-          (item) => item.speedTestStatus !== RequestStatus.Success
+          (item) => item.downloadSpeed,
+          (item) => item.downloadSpeedTestStatus !== RequestStatus.Success
         );
         return ret;
       }
-      if (sortColId === "meanRespond") {
+      if (sortColId === "respondTime") {
         const ret = sortByNumber<CfIpResponse>(
           prevTableData,
           sortType,
-          (item) => item.meanRespond,
-          (item) => item.responseTestStatus !== RequestStatus.Success
+          (item) => item.respondTime,
+          (item) => item.respondTestStatus !== RequestStatus.Success
         );
         return ret;
       }
@@ -70,8 +70,8 @@ export function useTableData() {
         if (index >= 0) {
           setTableData((prevTableData) => {
             const newTableData = prevTableData.slice();
-            newTableData[index].meanRespond = result.meanRespond;
-            newTableData[index].responseTestStatus = result.responseTestStatus;
+            newTableData[index].respondTime = result.respondTime;
+            newTableData[index].respondTestStatus = result.respondTestStatus;
             return newTableData;
           });
           return;
@@ -94,8 +94,9 @@ export function useTableData() {
         if (index >= 0) {
           setTableData((prevTableData) => {
             const newTableData = prevTableData.slice();
-            newTableData[index].meanDownloadSpeed = result.meanDownloadSpeed;
-            newTableData[index].speedTestStatus = result.speedTestStatus;
+            newTableData[index].downloadSpeed = result.downloadSpeed;
+            newTableData[index].downloadSpeedTestStatus =
+              result.downloadSpeedTestStatus;
 
             return newTableData;
           });
@@ -114,7 +115,7 @@ export function useTableData() {
       const newTableData: CfIpResponse[] = ipList.map((ip) => {
         return {
           ip,
-          meanRespond: 0,
+          respondTime: 0,
           responseTestStatus: "UNINITIALIZED",
           speedTestStatus: "UNINITIALIZED",
           meanDownloadSpeed: 0,
@@ -128,7 +129,7 @@ export function useTableData() {
       return prevTableData.map((row) => {
         return {
           ...row,
-          meanRespond: 0,
+          respondTime: 0,
           responseTestStatus: RequestStatus.Uninitialized,
         };
       });

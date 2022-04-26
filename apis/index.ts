@@ -65,18 +65,18 @@ const getCfNodeResponseTestTime = async (ip: string, testUrl: string) => {
   const startTime = Date.now();
   const result: CfIpResponse = {
     ip,
-    meanRespond: 0,
-    responseTestStatus: "PENDING",
+    respondTime: 0,
+    respondTestStatus: "PENDING",
   };
   try {
     const response = await getCfResponseTestFile(ip);
 
-    result.responseTestStatus = "SUCCESS";
-    result.meanRespond = Date.now() - startTime;
+    result.respondTestStatus = "SUCCESS";
+    result.respondTime = Date.now() - startTime;
   } catch (error) {
     console.log(error, "response error");
 
-    result.responseTestStatus = "ERROR";
+    result.respondTestStatus = "ERROR";
   }
   return result;
 };
@@ -84,20 +84,20 @@ const getCfNodeDownloadTestTime = async (ip: string, testUrl: string) => {
   const startTime = Date.now();
   const result: CfIpResponse = {
     ip,
-    meanDownloadSpeed: 0,
-    speedTestStatus: "PENDING",
+    downloadSpeed: 0,
+    downloadSpeedTestStatus: "PENDING",
   };
   try {
     await getCfResponseTestFile(ip);
     const response = await getCfDownloadTestFile(ip, testUrl);
     const { data: file } = response;
-    result.speedTestStatus = "SUCCESS";
+    result.downloadSpeedTestStatus = "SUCCESS";
     const time = (Date.now() - startTime) / 1000;
     const fileSize = file.size / (1024 * 1024); //MB
-    result.meanDownloadSpeed = round(fileSize / time, 2);
+    result.downloadSpeed = round(fileSize / time, 2);
   } catch (error) {
     console.log("download fail", error);
-    result.speedTestStatus = "ERROR";
+    result.downloadSpeedTestStatus = "ERROR";
   }
   return result;
 };

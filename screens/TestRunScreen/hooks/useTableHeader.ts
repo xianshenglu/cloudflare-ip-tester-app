@@ -4,54 +4,52 @@ export function useTableHeader() {
   const initialTableHeaderCols: MyTableHeaderColumn[] = [
     { id: "ip", label: "IP", width: 60, sort: "default" },
     {
-      id: "meanRespond",
-      label: "Mean Respond Time",
+      id: "respondTime",
+      label: "Respond Time",
       width: 40,
       sort: "default",
       // @ts-ignore
       formatter(row: CfIpResponse) {
         const meanRespondSpeedMap: Record<
           // @ts-ignore
-          CfIpResponse["responseTestStatus"],
+          CfIpResponse["respondTestStatus"],
           number | string | undefined
         > = {
           UNINITIALIZED: "",
-          SUCCESS: row.meanRespond,
+          SUCCESS: row.respondTime,
           ERROR: "Error",
           PENDING: "...",
         };
         // @ts-ignore
 
-        let meanRespond = meanRespondSpeedMap[row.responseTestStatus];
+        let respondTime = meanRespondSpeedMap[row.respondTestStatus];
 
-        return meanRespond;
+        return respondTime;
       },
     },
     {
-      id: "meanDownloadSpeed",
-      label: "Mean Download Speed",
+      id: "downloadSpeed",
+      label: "Download Speed",
       width: 40,
       sort: "default",
       // @ts-ignore
       formatter(row: CfIpResponse, column: MyTableHeaderColumn) {
-        const meanDownloadSpeedMap: Record<
+        const downloadSpeedMap: Record<
           // @ts-ignore
 
-          CfIpResponse["speedTestStatus"],
+          CfIpResponse["downloadSpeedTestStatus"],
           number | string | undefined
         > = {
           UNINITIALIZED: "",
-          SUCCESS: row.meanDownloadSpeed,
+          SUCCESS: row.downloadSpeed,
           ERROR: "Error",
           PENDING: "...",
         };
         // @ts-ignore
 
-        let meanDownloadSpeed = meanDownloadSpeedMap[row.speedTestStatus];
+        let downloadSpeed = downloadSpeedMap[row.downloadSpeedTestStatus];
         const result =
-          typeof meanDownloadSpeed === "number"
-            ? meanDownloadSpeed + "MB/S"
-            : "";
+          typeof downloadSpeed === "number" ? downloadSpeed + "MB/S" : "";
         return result;
       },
     },
