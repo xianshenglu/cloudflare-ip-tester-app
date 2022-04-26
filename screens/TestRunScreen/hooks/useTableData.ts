@@ -62,6 +62,7 @@ export function useTableData() {
     coCurrentCount: number,
     testUrl: string
   ): void {
+    resetResponseSpeedTest();
     getCfNodesResponseTestTime(ipList, coCurrentCount, testUrl)
       .pipe(takeUntil(responseTestService.start()))
       .subscribe((result) => {
@@ -85,6 +86,7 @@ export function useTableData() {
     coCurrentCount: number,
     testUrl: string
   ) {
+    resetDownloadSpeedTest();
     getCfNodesDownloadTestTime(ipList, coCurrentCount, testUrl)
       .pipe(takeUntil(downloadTestService.start()))
       .subscribe((result) => {
@@ -119,6 +121,28 @@ export function useTableData() {
         };
       });
       return newTableData;
+    });
+  }
+  function resetResponseSpeedTest() {
+    setTableData((prevTableData): CfIpResponse[] => {
+      return prevTableData.map((row) => {
+        return {
+          ...row,
+          meanRespond: 0,
+          responseTestStatus: RequestStatus.Uninitialized,
+        };
+      });
+    });
+  }
+  function resetDownloadSpeedTest() {
+    setTableData((prevTableData): CfIpResponse[] => {
+      return prevTableData.map((row) => {
+        return {
+          ...row,
+          meanDownloadSpeed: 0,
+          speedTestStatus: RequestStatus.Uninitialized,
+        };
+      });
     });
   }
   return {
