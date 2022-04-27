@@ -1,6 +1,6 @@
 import { StyleSheet, Button, TextInput } from "react-native";
 import { Text, View } from "@/components/Themed";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { responseTestService } from "@/services/ResponseTest.service";
 import { downloadTestService } from "@/services/DownloadTest.service";
 import { TableHeader } from "@/components/Table/TableHeader";
@@ -9,7 +9,7 @@ import { useTableData } from "../hooks/useTableData";
 import { useTestIpCount } from "../hooks/useTestIpCount";
 import { TableRows } from "@/components/Table/TableRows";
 import { initialTestPageTableHeaderCols, MyTableHeaderColumn } from "../model";
-import { RequestStatus } from "@/typings";
+import { useTestRunningStatus } from "../hooks/useTestRunningStatus";
 
 export default function TestPage({ path }: { path: string }) {
   const { testIpCount, setTestIpCount, getIpList } = useTestIpCount();
@@ -37,13 +37,32 @@ export default function TestPage({ path }: { path: string }) {
     changeTableHeadersSortType,
   } = useTableHeader<MyTableHeaderColumn>(initialTestPageTableHeaderCols);
 
+  const { testRunningStatus, nextTestRunningStatus } = useTestRunningStatus();
+
   function onReset() {
     responseTestService.stop();
     downloadTestService.stop();
     resetTableData();
     resetTableHeader();
-    initTableData(getIpList());
+    const newIpList = getIpList();
+    initTableData(newIpList);
+    nextTestRunningStatus();
   }
+
+  useEffect(() => {
+    // in the future may need to add a status check
+    startResponseSpeedTest(
+      getSelectedIpList(),
+      Number(testIpCoCurrentCount),
+      testUrl
+    );
+    startDownloadSpeedTest(
+      getSelectedIpList(),
+      Number(testIpCoCurrentCount),
+      testUrl
+    );
+  }, [testRunningStatus]);
+
   function onSort(
     colId: MyTableHeaderColumn["id"],
     sortType: MyTableHeaderColumn["sort"]
