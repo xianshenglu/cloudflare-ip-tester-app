@@ -28,14 +28,6 @@ export function useTableData() {
     sortType: `${SortType}`
   ) {
     setTableData((prevTableData) => {
-      if (sortType === SortType.Default) {
-        const ret = sortByIp(
-          prevTableData,
-          SortType.Ascending,
-          (item) => item.ip
-        );
-        return ret;
-      }
       if (sortColId === "downloadSpeed") {
         const ret = sortByNumber<CfIpResponse>(
           prevTableData,
@@ -63,8 +55,8 @@ export function useTableData() {
         );
         return ret;
       }
-
-      return prevTableData.slice();
+      const ret = sortByIp(prevTableData, sortType, (item) => item.ip);
+      return ret;
     });
   }
 
