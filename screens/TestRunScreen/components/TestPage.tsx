@@ -10,6 +10,7 @@ import { useTestIpCount } from "../hooks/useTestIpCount";
 import { TableRows } from "@/components/Table/TableRows";
 import { initialTestPageTableHeaderCols, MyTableHeaderColumn } from "../model";
 import { useTestRunningStatus } from "../hooks/useTestRunningStatus";
+import { miniStyle } from "@/theme";
 
 export default function TestPage({ path }: { path: string }) {
   const { testIpCount, setTestIpCount, getIpList } = useTestIpCount();
@@ -89,7 +90,7 @@ export default function TestPage({ path }: { path: string }) {
           }
           title="TEST RESPOND "
         />
-        <View style={{ marginRight: 10 }}></View>
+        <View style={{ marginRight: 5 }}></View>
         <Button
           onPress={() =>
             startDownloadSpeedTest(
@@ -100,7 +101,7 @@ export default function TestPage({ path }: { path: string }) {
           }
           title="TEST DOWNLOAD"
         />
-        <View style={{ marginRight: 10 }}></View>
+        <View style={{ marginRight: 5 }}></View>
         <Button onPress={onReset} title="START" />
       </View>
       <View style={styles.toolbar}>
@@ -128,8 +129,18 @@ export default function TestPage({ path }: { path: string }) {
         />
       </View>
 
-      <TableHeader onSort={onSort} cols={tableHeaders} />
-      <TableRows rows={tableData} columns={tableHeaders} rowKeyName={"ip"} />
+      <TableHeader
+        onSort={onSort}
+        cols={tableHeaders}
+        style={{ cellTextStyle: miniStyle.textStyle }}
+      />
+
+      <TableRows
+        rows={tableData}
+        columns={tableHeaders}
+        rowKeyName={"ip"}
+        style={{ cellTextStyle: miniStyle.textStyle }}
+      />
     </View>
   );
 }
