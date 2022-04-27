@@ -1,9 +1,12 @@
 import { StyleSheet } from "react-native";
 import { View } from "@/components/Themed";
 import { TableHeader } from "@/components/Table/TableHeader";
-import { useTableHeader } from "../hooks/useTableHeader";
+import { useTableHeader } from "@/hooks/useTableHeader";
 import { TableRows } from "@/components/Table/TableRows";
-import { MyTableHeaderColumn } from "../model";
+import {
+  initialTestStatisticsTableHeaderCols,
+  MyTableHeaderColumn,
+} from "../model";
 import { observer } from "mobx-react";
 import { CfIpStatistics, TestStatistics } from "@/store/TestStatistics";
 
@@ -16,7 +19,8 @@ export const StatisticsData = observer(
 function StatisticsDataInternal(props: { rows: CfIpStatistics[] }) {
   //   const { tableData, sortTableData } = useTableData();
 
-  const { tableHeaders, changeTableHeadersSortType } = useTableHeader();
+  const { tableHeaders, changeTableHeadersSortType } =
+    useTableHeader<MyTableHeaderColumn>(initialTestStatisticsTableHeaderCols);
 
   function onSort(
     colId: MyTableHeaderColumn["id"],

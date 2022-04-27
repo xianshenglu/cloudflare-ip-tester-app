@@ -4,11 +4,12 @@ import { useState } from "react";
 import { responseTestService } from "@/services/ResponseTest.service";
 import { downloadTestService } from "@/services/DownloadTest.service";
 import { TableHeader } from "@/components/Table/TableHeader";
-import { useTableHeader } from "../hooks/useTableHeader";
+import { useTableHeader } from "@/hooks/useTableHeader";
 import { useTableData } from "../hooks/useTableData";
 import { useTestIpCount } from "../hooks/useTestIpCount";
 import { TableRows } from "@/components/Table/TableRows";
-import { MyTableHeaderColumn } from "../model";
+import { initialTestPageTableHeaderCols, MyTableHeaderColumn } from "../model";
+import { RequestStatus } from "@/typings";
 
 export default function TestPage({ path }: { path: string }) {
   const { testIpCount, setTestIpCount, getIpList } = useTestIpCount();
@@ -34,7 +35,7 @@ export default function TestPage({ path }: { path: string }) {
     tableHeaders,
     reset: resetTableHeader,
     changeTableHeadersSortType,
-  } = useTableHeader();
+  } = useTableHeader<MyTableHeaderColumn>(initialTestPageTableHeaderCols);
 
   function onReset() {
     responseTestService.stop();
@@ -53,7 +54,7 @@ export default function TestPage({ path }: { path: string }) {
   function onTestIpCountChange(v: string) {
     setTestIpCount(() => {
       return v;
-    });   
+    });
   }
 
   return (
