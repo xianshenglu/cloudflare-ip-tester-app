@@ -1,11 +1,16 @@
 import { TableHeaderColumn } from "@/components/Table/TableHeader";
-export type MyTableHeaderColumn = TableHeaderColumn<
-  | "ip"
-  | "respondSuccessRate"
-  | "meanRespondTime"
-  | "downloadSuccessRate"
-  | "meanDownloadSpeed"
->;
+
+export type MyTableHeaderColumn =
+  TableHeaderColumn<`${TestStatisticsTableHeaderCol}`>;
+  
+export enum TestStatisticsTableHeaderCol {
+  Ip = "ip",
+  RespondSuccessRate = "respondSuccessRate",
+  MeanRespondTime = "meanRespondTime",
+  DownloadSuccessRate = "downloadSuccessRate",
+  MeanDownloadSpeed = "meanDownloadSpeed",
+}
+
 
 export const initialTestStatisticsTableHeaderCols: MyTableHeaderColumn[] = [
   { id: "ip", label: "IP", width: 60, sort: "default" },

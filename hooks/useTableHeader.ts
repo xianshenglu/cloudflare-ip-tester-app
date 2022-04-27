@@ -27,7 +27,10 @@ export function useTableHeader<TableHeaderCol extends TableHeaderColumn>(
   function reset() {
     setTableHeaders(() => initialTableHeaderCols);
   }
-  function getCurrentSortConf() {
+  function getCurrentSortConf(): {
+    sortType: `${SortType}`;
+    columnId: TableHeaderCol["id"];
+  } {
     let activeSortCol = tableHeaders.find(
       (item) => item.sort !== SortType.Default
     );

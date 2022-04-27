@@ -15,7 +15,7 @@ export function sortByNumber<T = unknown>(
   list: T[],
   sortType: `${SortType}`,
   getValue: (arg: T) => any,
-  isInvalidValue: (arg: T) => boolean
+  isInvalidValue: (arg: T) => boolean = (arg) => true
 ) {
   const invalidValues = list.filter((item) => isInvalidValue(item));
   const validValues = list.filter((item) => !isInvalidValue(item));
