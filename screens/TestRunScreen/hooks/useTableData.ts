@@ -144,12 +144,13 @@ export function useTableData() {
     });
   }
   function resetDownloadSpeedTest() {
+    /**todo fix type bug */
     setTableData((prevTableData): CfIpResponse[] => {
       return prevTableData.map((row) => {
         return {
           ...row,
-          meanDownloadSpeed: 0,
-          speedTestStatus: RequestStatus.Uninitialized,
+          downloadSpeed: 0,
+          downloadSpeedTestStatus: RequestStatus.Uninitialized,
         };
       });
     });
