@@ -7,12 +7,6 @@ import { testStatisticsStore } from "@/store/TestStatistics";
 export default function TestConfigScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Test Statistics</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
       <StatisticsData testStatisticsStore={testStatisticsStore} />
     </View>
   );
