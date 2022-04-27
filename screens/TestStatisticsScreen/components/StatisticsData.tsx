@@ -30,11 +30,16 @@ function StatisticsDataInternal(props: { rows: CfIpStatistics[] }) {
   return (
     <View style={styles.getStartedContainer}>
       <TableHeader
-        style={{ cellTextStyle: styles.tableHeader }}
+        style={{ cellTextStyle: styles.tableCell }}
         onSort={onSort}
         cols={tableHeaders}
       />
-      <TableRows rows={rows} columns={tableHeaders} rowKeyName={"ip"} />
+      <TableRows
+        rows={rows}
+        columns={tableHeaders}
+        rowKeyName={"ip"}
+        style={{ cellTextStyle: styles.tableCell }}
+      />
     </View>
   );
 }
@@ -49,7 +54,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 10,
   },
-  tableHeader: {
-    fontSize: 10,
+  tableCell: {
+    fontSize: 12,
   },
 });
