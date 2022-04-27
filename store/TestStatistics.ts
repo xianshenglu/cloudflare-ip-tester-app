@@ -2,7 +2,6 @@ import { round } from "lodash-es";
 import { RequestStatus } from "./../typings/index";
 import { CfIpResponse } from "@/screens/TestRunScreen/model";
 import { makeAutoObservable } from "mobx";
-
 export type CfIpSummary = {
   ip: string;
   respondSuccessCount: number;
@@ -23,7 +22,36 @@ export type CfIpStatistics = CfIpSummary & {
 
 export class TestStatistics {
   private statistics: Record<string, CfIpSummary> = {};
-
+  public get computedRecordList(): CfIpStatistics[] {
+    const result = this.getRawRecordList().map((cfIpSummary) => {
+      const totalRespondCount =
+        cfIpSummary.respondSuccessCount + cfIpSummary.respondFailCount;
+      const totalDownloadCount =
+        cfIpSummary.downloadSuccessCount + cfIpSummary.downloadFailCount;
+      return {
+        ...cfIpSummary,
+        count: cfIpSummary.respondSuccessCount + cfIpSummary.respondFailCount,
+        meanRespondTime: round(
+          cfIpSummary.totalRespondTime / cfIpSummary.respondSuccessCount,
+          0
+        ),
+        // MB, so keep 2 decimal
+        meanDownloadSpeed: round(
+          cfIpSummary.totalDownloadSpeed / cfIpSummary.downloadSuccessCount,
+          2
+        ),
+        respondSuccessRate: round(
+          (100 * cfIpSummary.respondSuccessCount) / totalRespondCount,
+          0
+        ),
+        downloadSuccessRate: round(
+          (100 * cfIpSummary.downloadSuccessCount) / totalDownloadCount,
+          0
+        ),
+      };
+    });
+    return result;
+  }
   constructor() {
     makeAutoObservable(this);
   }
@@ -73,36 +101,6 @@ export class TestStatistics {
   }
   getRawRecordList() {
     return Object.values(this.statistics);
-  }
-  getComputedRecordList(): CfIpStatistics[] {
-    const result = this.getRawRecordList().map((cfIpSummary) => {
-      const totalRespondCount =
-        cfIpSummary.respondSuccessCount + cfIpSummary.respondFailCount;
-      const totalDownloadCount =
-        cfIpSummary.downloadSuccessCount + cfIpSummary.downloadFailCount;
-      return {
-        ...cfIpSummary,
-        count: cfIpSummary.respondSuccessCount + cfIpSummary.respondFailCount,
-        meanRespondTime: round(
-          cfIpSummary.totalRespondTime / cfIpSummary.respondSuccessCount,
-          0
-        ),
-        // MB, so keep 2 decimal
-        meanDownloadSpeed: round(
-          cfIpSummary.totalDownloadSpeed / cfIpSummary.downloadSuccessCount,
-          2
-        ),
-        respondSuccessRate: round(
-          (100 * cfIpSummary.respondSuccessCount) / totalRespondCount,
-          0
-        ),
-        downloadSuccessRate: round(
-          (100 * cfIpSummary.downloadSuccessCount) / totalDownloadCount,
-          0
-        ),
-      };
-    });
-    return result;
   }
   isRecordRespondSuccess(cfIpResponse: CfIpResponse) {
     return cfIpResponse.respondTestStatus === RequestStatus.Success;

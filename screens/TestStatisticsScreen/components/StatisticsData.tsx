@@ -5,17 +5,15 @@ import { useTableHeader } from "../hooks/useTableHeader";
 import { TableRows } from "@/components/Table/TableRows";
 import { MyTableHeaderColumn } from "../model";
 import { observer } from "mobx-react";
-import { TestStatistics, testStatisticsStore } from "@/store/TestStatistics";
+import { CfIpStatistics, TestStatistics } from "@/store/TestStatistics";
 
 export const StatisticsData = observer(
   ({ testStatisticsStore }: { testStatisticsStore: TestStatistics }) => (
-    <StatisticsDataInternal testStatisticsStore={testStatisticsStore} />
+    <StatisticsDataInternal rows={testStatisticsStore.computedRecordList} />
   )
 );
 
-function StatisticsDataInternal(props: {
-  testStatisticsStore: TestStatistics;
-}) {
+function StatisticsDataInternal(props: { rows: CfIpStatistics[] }) {
   //   const { tableData, sortTableData } = useTableData();
 
   const { tableHeaders, changeTableHeadersSortType } = useTableHeader();
@@ -27,6 +25,7 @@ function StatisticsDataInternal(props: {
     changeTableHeadersSortType(colId, sortType);
     // sortTableData(colId, sortType);
   }
+  const { rows } = props;
 
   return (
     <View style={styles.getStartedContainer}>
@@ -35,11 +34,7 @@ function StatisticsDataInternal(props: {
         onSort={onSort}
         cols={tableHeaders}
       />
-      <TableRows
-        rows={testStatisticsStore.getComputedRecordList()}
-        columns={tableHeaders}
-        rowKeyName={"ip"}
-      />
+      <TableRows rows={rows} columns={tableHeaders} rowKeyName={"ip"} />
     </View>
   );
 }
