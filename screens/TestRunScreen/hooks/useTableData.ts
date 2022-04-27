@@ -6,11 +6,10 @@ import {
   getCfNodesDownloadTestTime,
 } from "./../../../apis/index";
 import { takeUntil } from "rxjs";
-import { sortByIp } from "@/utils";
+import { sortByIp } from "@/utils/sorter";
 import { SortType, RequestStatus } from "@/typings/index";
 import { useState } from "react";
-import { sortByNumber } from "@/utils";
-import { sortByString } from "@/utils";
+import { sortByNumber } from "@/utils/sorter";
 import { responseTestService } from "@/services/ResponseTest.service";
 import { downloadTestService } from "@/services/DownloadTest.service";
 import { testStatisticsStore } from "@/store/TestStatistics";

@@ -11,7 +11,7 @@ import {
 import { observer } from "mobx-react";
 import { CfIpStatistics, TestStatistics } from "@/store/TestStatistics";
 import { SortType } from "@/typings";
-import { sortByIp, sortByNumber } from "@/utils";
+import { sortByIp, sortByNumber } from "@/utils/sorter";
 
 export const StatisticsData = observer(
   ({ testStatisticsStore }: { testStatisticsStore: TestStatistics }) => (
