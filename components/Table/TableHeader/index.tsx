@@ -1,6 +1,6 @@
 import { SortType } from "@/typings";
 import { FontAwesome } from "@expo/vector-icons";
-import { Pressable, StyleSheet } from "react-native";
+import { Pressable, StyleSheet, TextStyle } from "react-native";
 import { Text, View } from "@/components/Themed";
 import { tableSharedStyles } from "..";
 
@@ -17,8 +17,10 @@ export function TableHeader(props: {
     id: TableHeaderColumn["id"],
     sortType: TableHeaderColumn["sort"]
   ) => void;
+  style?: { cellTextStyle?: TextStyle };
 }) {
   const { cols, onSort } = props;
+  let cellTextStyle = props.style?.cellTextStyle || {};
   const sortIconNameMap: Record<
     TableHeaderColumn["sort"],
     "sort-asc" | "sort-desc" | "info"
@@ -37,7 +39,7 @@ export function TableHeader(props: {
   };
 
   return (
-    <View style={tableSharedStyles.tableHeader}>
+    <View style={{ ...tableSharedStyles.tableHeader }}>
       {cols.map((column) => {
         return (
           <Pressable
@@ -49,7 +51,9 @@ export function TableHeader(props: {
               ...styles.tableHeaderCell,
             }}
           >
-            <Text style={styles.tableHeaderCellText}> {column.label}</Text>
+            <Text style={{ ...styles.tableHeaderCellText, ...cellTextStyle }}>
+              {column.label}
+            </Text>
             <FontAwesome
               name={sortIconNameMap[column.sort]}
               size={12}

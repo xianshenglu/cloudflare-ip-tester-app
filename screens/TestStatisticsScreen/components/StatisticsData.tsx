@@ -30,7 +30,11 @@ function StatisticsDataInternal(props: {
 
   return (
     <View style={styles.getStartedContainer}>
-      <TableHeader onSort={onSort} cols={tableHeaders} />
+      <TableHeader
+        style={{ cellTextStyle: styles.tableHeader }}
+        onSort={onSort}
+        cols={tableHeaders}
+      />
       <TableRows
         rows={testStatisticsStore.getComputedRecordList()}
         columns={tableHeaders}
@@ -48,5 +52,9 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignSelf: "stretch",
     flex: 1,
+    fontSize: 10,
+  },
+  tableHeader: {
+    fontSize: 10,
   },
 });
