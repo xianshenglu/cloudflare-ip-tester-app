@@ -1,6 +1,6 @@
 import { StyleSheet, Button, TextInput } from "react-native";
 import { Text, View } from "@/components/Themed";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { responseTestService } from "@/services/ResponseTest.service";
 import { downloadTestService } from "@/services/DownloadTest.service";
 import { TableHeader } from "@/components/Table/TableHeader";
@@ -9,7 +9,8 @@ import { useTableData } from "../hooks/useTableData";
 import { useTestIpCount } from "../hooks/useTestIpCount";
 import { TableRows } from "@/components/Table/TableRows";
 import { initialTestPageTableHeaderCols, MyTableHeaderColumn } from "../model";
-import { RequestStatus } from "@/typings";
+import { useTestRunningStatus } from "../hooks/useTestRunningStatus";
+import { miniStyle } from "@/theme";
 
 export default function TestPage({ path }: { path: string }) {
   const { testIpCount, setTestIpCount, getIpList } = useTestIpCount();
@@ -37,13 +38,32 @@ export default function TestPage({ path }: { path: string }) {
     changeTableHeadersSortType,
   } = useTableHeader<MyTableHeaderColumn>(initialTestPageTableHeaderCols);
 
+  const { testRunningStatus, nextTestRunningStatus } = useTestRunningStatus();
+
   function onReset() {
     responseTestService.stop();
     downloadTestService.stop();
     resetTableData();
     resetTableHeader();
-    initTableData(getIpList());
+    const newIpList = getIpList();
+    initTableData(newIpList);
+    nextTestRunningStatus();
   }
+
+  useEffect(() => {
+    // in the future may need to add a status check
+    startResponseSpeedTest(
+      getSelectedIpList(),
+      Number(testIpCoCurrentCount),
+      testUrl
+    );
+    startDownloadSpeedTest(
+      getSelectedIpList(),
+      Number(testIpCoCurrentCount),
+      testUrl
+    );
+  }, [testRunningStatus]);
+
   function onSort(
     colId: MyTableHeaderColumn["id"],
     sortType: MyTableHeaderColumn["sort"]
@@ -70,7 +90,7 @@ export default function TestPage({ path }: { path: string }) {
           }
           title="TEST RESPOND "
         />
-        <View style={{ marginRight: 10 }}></View>
+        <View style={{ marginRight: 5 }}></View>
         <Button
           onPress={() =>
             startDownloadSpeedTest(
@@ -81,7 +101,7 @@ export default function TestPage({ path }: { path: string }) {
           }
           title="TEST DOWNLOAD"
         />
-        <View style={{ marginRight: 10 }}></View>
+        <View style={{ marginRight: 5 }}></View>
         <Button onPress={onReset} title="START" />
       </View>
       <View style={styles.toolbar}>
@@ -109,8 +129,18 @@ export default function TestPage({ path }: { path: string }) {
         />
       </View>
 
-      <TableHeader onSort={onSort} cols={tableHeaders} />
-      <TableRows rows={tableData} columns={tableHeaders} rowKeyName={"ip"} />
+      <TableHeader
+        onSort={onSort}
+        cols={tableHeaders}
+        style={{ cellTextStyle: miniStyle.textStyle }}
+      />
+
+      <TableRows
+        rows={tableData}
+        columns={tableHeaders}
+        rowKeyName={"ip"}
+        style={{ cellTextStyle: miniStyle.textStyle }}
+      />
     </View>
   );
 }
