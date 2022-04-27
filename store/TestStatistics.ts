@@ -1,7 +1,8 @@
+import { getStoredJson, storeJson } from "./storage";
 import { round } from "lodash-es";
 import { RequestStatus } from "./../typings/index";
 import { CfIpResponse } from "@/screens/TestRunScreen/model";
-import { makeAutoObservable } from "mobx";
+import { autorun, makeAutoObservable } from "mobx";
 export type CfIpSummary = {
   ip: string;
   respondSuccessCount: number;
@@ -19,9 +20,10 @@ export type CfIpStatistics = CfIpSummary & {
   respondSuccessRate: number;
   downloadSuccessRate: number;
 };
-
+export type CfIpStatisticsMap = Record<string, CfIpSummary>;
+const STORAGE_KEY_TEST_STATISTICS = "cf-ip-tester-app__test-statistics";
 export class TestStatistics {
-  private statistics: Record<string, CfIpSummary> = {};
+  private statistics: CfIpStatisticsMap = {};
   public get computedRecordList(): CfIpStatistics[] {
     const result = this.getRawRecordList().map((cfIpSummary) => {
       const totalRespondCount =
@@ -54,6 +56,16 @@ export class TestStatistics {
   }
   constructor() {
     makeAutoObservable(this);
+    getStoredJson<CfIpStatisticsMap>(STORAGE_KEY_TEST_STATISTICS, {})
+      .then((statistics) => {
+        this.setStatistics(statistics);
+      })
+      .catch(() => {
+        // avoid throw error
+      });
+    autorun(() => {
+      storeJson(STORAGE_KEY_TEST_STATISTICS, this.statistics);
+    });
   }
   isRecordExist(cfIpResponse: CfIpResponse) {
     return !!this.statistics[cfIpResponse.ip];
@@ -99,6 +111,12 @@ export class TestStatistics {
   getRecord(ip: string) {
     return this.statistics[ip];
   }
+  getStatistics() {
+    return this.statistics;
+  }
+  setStatistics(statistics: CfIpStatisticsMap) {
+    this.statistics = statistics;
+  }
   getRawRecordList() {
     return Object.values(this.statistics);
   }
@@ -116,4 +134,6 @@ export class TestStatistics {
   }
 }
 
-export const testStatisticsStore = new TestStatistics();
+const testStatisticsStore = new TestStatistics();
+
+export { testStatisticsStore };
