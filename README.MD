@@ -1,5 +1,6 @@
 # cloudflare-ip-tester-app
 
+[中文文档](./README-ZH.MD)
 ### Inspired by
 
 - [CloudflareSpeedTest](https://github.com/XIU2/CloudflareSpeedTest)
