@@ -55,6 +55,12 @@ function sortTableData(
       (obj) => obj.downloadSuccessCount === 0
     );
   }
+  if (colId === TestStatisticsTableHeaderCol.TotalRespondCount) {
+    return sortByNumber(dataList, sortType, (obj) => obj.totalRespondCount);
+  }
+  if (colId === TestStatisticsTableHeaderCol.TotalDownloadCount) {
+    return sortByNumber(dataList, sortType, (obj) => obj.totalDownloadCount);
+  }
   return sortByIp(dataList, sortType, (obj) => obj.ip);
 }
 function StatisticsDataInternal(props: { rows: CfIpStatistics[] }) {
