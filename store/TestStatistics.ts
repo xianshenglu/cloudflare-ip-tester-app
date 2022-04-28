@@ -14,7 +14,8 @@ export type CfIpSummary = {
 };
 
 export type CfIpStatistics = CfIpSummary & {
-  count: number;
+  totalRespondCount: number;
+  totalDownloadCount: number;
   meanRespondTime: number;
   meanDownloadSpeed: number;
   respondSuccessRate: number;
@@ -32,7 +33,8 @@ export class TestStatistics {
         cfIpSummary.downloadSuccessCount + cfIpSummary.downloadFailCount;
       return {
         ...cfIpSummary,
-        count: cfIpSummary.respondSuccessCount + cfIpSummary.respondFailCount,
+        totalRespondCount,
+        totalDownloadCount,
         meanRespondTime: round(
           cfIpSummary.totalRespondTime / cfIpSummary.respondSuccessCount,
           0

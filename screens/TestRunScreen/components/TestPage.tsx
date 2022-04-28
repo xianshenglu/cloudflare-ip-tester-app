@@ -1,4 +1,4 @@
-import { StyleSheet, Button, TextInput } from "react-native";
+import { StyleSheet, TextInput } from "react-native";
 import { Text, View } from "@/components/Themed";
 import { useEffect, useState } from "react";
 import { responseTestService } from "@/services/ResponseTest.service";
@@ -11,7 +11,8 @@ import { TableRows } from "@/components/Table/TableRows";
 import { initialTestPageTableHeaderCols, MyTableHeaderColumn } from "../model";
 import { useTestRunningStatus } from "../hooks/useTestRunningStatus";
 import { miniStyle } from "@/theme";
-
+import { Button } from "react-native-paper";
+import { I18n } from "@/localize";
 export default function TestPage({ path }: { path: string }) {
   const { testIpCount, setTestIpCount, getIpList } = useTestIpCount();
   const [testIpCoCurrentCount, setTestIpCoCurrentCount] = useState<string>("5");
@@ -88,8 +89,12 @@ export default function TestPage({ path }: { path: string }) {
               testUrl
             )
           }
-          title="TEST RESPOND "
-        />
+          mode="contained"
+          contentStyle={{ ...styles.paperBtnContent }}
+          labelStyle={{ ...miniStyle.textStyle }}
+        >
+          {I18n.t("testRun.testRespond")}
+        </Button>
         <View style={{ marginRight: 5 }}></View>
         <Button
           onPress={() =>
@@ -99,20 +104,32 @@ export default function TestPage({ path }: { path: string }) {
               testUrl
             )
           }
-          title="TEST DOWNLOAD"
-        />
+          mode="contained"
+          contentStyle={{ ...styles.paperBtnContent }}
+          labelStyle={{ ...miniStyle.textStyle }}
+        >
+          {I18n.t("testRun.testDownload")}
+        </Button>
         <View style={{ marginRight: 5 }}></View>
-        <Button onPress={onReset} title="START" />
+
+        <Button
+          onPress={onReset}
+          mode="contained"
+          contentStyle={{ ...styles.paperBtnContent }}
+          labelStyle={{ ...miniStyle.textStyle }}
+        >
+          {I18n.t("general.start")}
+        </Button>
       </View>
       <View style={styles.toolbar}>
-        <Text>ip count</Text>
+        <Text> {I18n.t("testRun.ipCount")}</Text>
         <TextInput
           style={styles.input}
           onChangeText={onTestIpCountChange}
           value={testIpCount}
           keyboardType="numeric"
         />
-        <Text>coCurrent count</Text>
+        <Text> {I18n.t("testRun.coCurrentCount")}</Text>
         <TextInput
           style={styles.input}
           onChangeText={(val) => setTestIpCoCurrentCount(() => val)}
@@ -121,7 +138,7 @@ export default function TestPage({ path }: { path: string }) {
         />
       </View>
       <View style={styles.toolbar}>
-        <Text>test url</Text>
+        <Text>{I18n.t("testRun.testUrl")}</Text>
         <TextInput
           style={{ ...styles.input, flex: 1 }}
           onChangeText={(val) => setTestUrl(() => val)}
@@ -167,4 +184,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 10,
   },
+  paperBtnContent: { marginHorizontal: -10, marginVertical: -2 },
 });

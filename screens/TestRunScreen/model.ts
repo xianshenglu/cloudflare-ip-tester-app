@@ -1,3 +1,4 @@
+import { I18n } from '@/localize';
 import { RequestStatus } from "@/typings/index";
 import { TableHeaderColumn } from "@/components/Table/TableHeader";
 export type CfIpResponse = {
@@ -14,10 +15,10 @@ export type MyTableHeaderColumn = TableHeaderColumn<
 >;
 
 export const initialTestPageTableHeaderCols: MyTableHeaderColumn[] = [
-  { id: "ip", label: "IP", width: 60, sort: "default" },
+  { id: "ip", label: I18n.t("general.ip"), width: 60, sort: "default" },
   {
     id: "packetLossRate",
-    label: "Loss Rate",
+    label: I18n.t("general.lossRate"),
     width: 40,
     sort: "default",
     // @ts-ignore
@@ -30,7 +31,7 @@ export const initialTestPageTableHeaderCols: MyTableHeaderColumn[] = [
   },
   {
     id: "respondTime",
-    label: "Respond Time",
+    label: I18n.t("general.respondTime"),
     width: 40,
     sort: "default",
     // @ts-ignore
@@ -54,7 +55,7 @@ export const initialTestPageTableHeaderCols: MyTableHeaderColumn[] = [
   },
   {
     id: "downloadSpeed",
-    label: "Download Speed",
+    label: I18n.t("general.downloadSpeed"),
     width: 40,
     sort: "default",
     // @ts-ignore

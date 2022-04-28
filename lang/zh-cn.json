@@ -1,0 +1,34 @@
+{
+  "general": {
+    "start": "开始",
+
+    "ip": "IP",
+    "lossRate": "丢包率",
+    "respondTime": "响应时长",
+    "downloadSpeed": "下载速度",
+    "showAllData": "展示所有数据",
+    "showSortedTop": "展示排序后的前"
+  },
+  "testRun": {
+    "title": "运行测试",
+    "testRespond": "测试响应",
+    "testDownload": "测试下载",
+    "ipCount": "IP 数量",
+    "coCurrentCount": "并发数",
+    "testUrl": "测试地址"
+  },
+  "testStatistics": {
+    "title": "测试统计",
+    "totalRespond": "响应次数",
+    "respondSuccessRate": "响应成功率",
+    "meanRespondTime": "平均响应时长",
+    "totalDownload": "下载次数",
+    "downloadSuccessRate": "下载成功率",
+    "meanDownload": "平均下载速度",
+    "showAllColumns": "展示所有列",
+    "hideSomeColumns": "隐藏某些列"
+  },
+  "testConfig": {
+    "title": "测试配置"
+  }
+}
