@@ -1,6 +1,6 @@
 # cloudflare-ip-tester-app
 
-[中文文档](./README-ZH.MD)
+[ENGLISH](./README.MD)
 ### Inspired by
 
 - [CloudflareSpeedTest](https://github.com/XIU2/CloudflareSpeedTest)
@@ -14,8 +14,8 @@
 - generate a history statistics based on your test results.
 
 <div style="display: flex;flex-flow:row wrap;">
-    <img src="./assets/images/test-run-min.jpg" height="600">
-    <img src="./assets/images/test-statistics-min.jpg" height="600">
+    <img src="./assets/images/test-run-min-zh.jpg" height="600">
+    <img src="./assets/images/test-statistics-min-zh.jpg" height="600">
 </div>
 
 ### MIT License
