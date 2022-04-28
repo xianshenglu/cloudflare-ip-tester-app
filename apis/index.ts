@@ -17,9 +17,10 @@ const getTargetUrlConfig = (ip: string, testUrl: string) => {
     oldUrl,
   };
 };
-const getCfResponseTestFile = (ip: string) => {
-  const testUrl = `https://speed.cloudflare.com/__down`;
+const getCfResponseTestFile = (ip: string, testUrl: string) => {
   const { host, oldUrl, newUrl } = getTargetUrlConfig(ip, testUrl);
+  newUrl.set("pathname", "");
+  newUrl.set("query", "");
   newUrl.set("host", ip);
   newUrl.set("protocol", "http:");
   const headers = {
@@ -69,7 +70,7 @@ const getCfNodeResponseTestTime = async (ip: string, testUrl: string) => {
     respondTestStatus: RequestStatus.Pending,
   });
   try {
-    const response = await getCfResponseTestFile(ip);
+    const response = await getCfResponseTestFile(ip, testUrl);
 
     result.respondTestStatus = "SUCCESS";
     result.respondTime = Date.now() - startTime;
@@ -86,7 +87,7 @@ const getCfNodeDownloadTestTime = async (ip: string, testUrl: string) => {
     downloadSpeedTestStatus: RequestStatus.Pending,
   });
   try {
-    await getCfResponseTestFile(ip);
+    await getCfResponseTestFile(ip, testUrl);
     const response = await getCfDownloadTestFile(ip, testUrl);
     const { data: file } = response;
     result.downloadSpeedTestStatus = "SUCCESS";

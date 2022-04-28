@@ -6,7 +6,6 @@ import en from "../lang/en-us.json";
 // 获取手机本地国际化信息
 const locales = RNLocalize.getLocales();
 const systemLanguage = locales[0]?.languageCode; // 用户系统偏好语言
-console.log(locales, 12, systemLanguage);
 
 // 如果获取到了即使用，否则启用默认语言
 if (systemLanguage) {
