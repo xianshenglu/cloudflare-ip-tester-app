@@ -15,6 +15,8 @@ import { sortByIp, sortByNumber } from "@/utils/sorter";
 import { useState } from "react";
 import { Button } from "react-native-paper";
 import { getStoredJson, storeJson } from "@/store/storage";
+import { I18n } from "@/localize";
+
 const STORAGE_KEY_TEST_STATISTICS_USER_CONFIG =
   "STORAGE_KEY_TEST_STATISTICS_USER_CONFIG";
 export const StatisticsData = observer(
@@ -130,7 +132,9 @@ function StatisticsDataInternal(props: { rows: CfIpStatistics[] }) {
           contentStyle={{ marginHorizontal: -5, marginVertical: -2 }}
           onPress={() => onIsShowAllHeaderChange(!isShowAllHeader)}
         >
-          {isShowAllHeader ? "HIDE SOME COLUMNS" : "SHOW ALL COLUMNS"}
+          {isShowAllHeader
+            ? I18n.t("testStatistics.hideSomeColumns")
+            : I18n.t("testStatistics.showAllColumns")}
         </Button>
       </View>
 

@@ -5,7 +5,6 @@ import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
-
 const theme = {
   ...DefaultTheme,
   colors: {

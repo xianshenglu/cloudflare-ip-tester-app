@@ -1,0 +1,32 @@
+{
+  "general": {
+    "start": "START",
+
+    "ip": "IP",
+    "lossRate": "Loss Rate",
+    "respondTime": "Respond Time",
+    "downloadSpeed": "Download Speed"
+  },
+  "testRun": {
+    "title": "Test Run",
+    "testRespond": "TEST RESPOND",
+    "testDownload": "TEST DOWNLOAD",
+    "ipCount": "ip count",
+    "coCurrentCount": "coCurrent count",
+    "testUrl": "test url"
+  },
+  "testStatistics": {
+    "title": "Test Statistics",
+    "totalRespond": "Total Respond",
+    "respondSuccessRate": "Respond Suc Rate",
+    "meanRespondTime": "Mean Respond Time",
+    "totalDownload": "Total Download",
+    "downloadSuccessRate": "Download Suc Rate",
+    "meanDownload": "Mean Download",
+    "showAllColumns": "Show All Columns",
+    "hideSomeColumns": "Hide Some Columns"
+  },
+  "testConfig": {
+    "title": "Test Config"
+  }
+}

@@ -1,11 +1,12 @@
 import { StyleSheet } from "react-native";
 
 import { Text, View } from "../components/Themed";
+import { I18n } from "@/localize";
 
 export default function TestConfigScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Test Config</Text>
+      <Text style={styles.title}>{I18n.t("testConfig.title")}</Text>
       <View
         style={styles.separator}
         lightColor="#eee"
