@@ -12,7 +12,11 @@ import { observer } from "mobx-react";
 import { CfIpStatistics, TestStatistics } from "@/store/TestStatistics";
 import { SortType } from "@/typings";
 import { sortByIp, sortByNumber } from "@/utils/sorter";
-
+import { useState } from "react";
+import { Button } from "react-native-paper";
+import { getStoredJson, storeJson } from "@/store/storage";
+const STORAGE_KEY_TEST_STATISTICS_USER_CONFIG =
+  "STORAGE_KEY_TEST_STATISTICS_USER_CONFIG";
 export const StatisticsData = observer(
   ({ testStatisticsStore }: { testStatisticsStore: TestStatistics }) => (
     <StatisticsDataInternal rows={testStatisticsStore.computedRecordList} />
@@ -63,6 +67,19 @@ function sortTableData(
   }
   return sortByIp(dataList, sortType, (obj) => obj.ip);
 }
+function getFilteredTableHeaders(
+  originalTableHeaders: MyTableHeaderColumn[],
+  isShowAllHeader: boolean
+) {
+  if (isShowAllHeader) {
+    return originalTableHeaders;
+  }
+  return originalTableHeaders.filter(
+    (column) =>
+      column.id !== TestStatisticsTableHeaderCol.TotalRespondCount &&
+      column.id !== TestStatisticsTableHeaderCol.TotalDownloadCount
+  );
+}
 function StatisticsDataInternal(props: { rows: CfIpStatistics[] }) {
   const { tableHeaders, changeTableHeadersSortType, getCurrentSortConf } =
     useTableHeader<MyTableHeaderColumn>(initialTestStatisticsTableHeaderCols);
@@ -81,17 +98,50 @@ function StatisticsDataInternal(props: { rows: CfIpStatistics[] }) {
     columnId as `${TestStatisticsTableHeaderCol}`,
     sortType
   );
+  const [isShowAllHeader, setIsShowAllHeader] = useState<boolean>(false);
 
+  let filteredTableHeaders = getFilteredTableHeaders(
+    tableHeaders,
+    isShowAllHeader
+  );
+
+  getStoredJson<Record<string, any>>(
+    STORAGE_KEY_TEST_STATISTICS_USER_CONFIG,
+    {}
+  ).then(({ isShowAllHeader }) => {
+    setIsShowAllHeader(() => !!isShowAllHeader);
+  });
+
+  function onIsShowAllHeaderChange(isShowAllHeader: boolean) {
+    setIsShowAllHeader((isShowAllHeader) => !isShowAllHeader);
+    storeJson(STORAGE_KEY_TEST_STATISTICS_USER_CONFIG, { isShowAllHeader });
+  }
   return (
     <View style={styles.getStartedContainer}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "flex-end",
+          marginBottom: 10,
+        }}
+      >
+        <Button
+          mode="contained"
+          contentStyle={{ marginHorizontal: -5, marginVertical: -2 }}
+          onPress={() => onIsShowAllHeaderChange(!isShowAllHeader)}
+        >
+          {isShowAllHeader ? "HIDE SOME COLUMNS" : "SHOW ALL COLUMNS"}
+        </Button>
+      </View>
+
       <TableHeader
         style={{ cellTextStyle: styles.tableCell }}
         onSort={onSort}
-        cols={tableHeaders}
+        cols={filteredTableHeaders}
       />
       <TableRows
         rows={sortedRows}
-        columns={tableHeaders}
+        columns={filteredTableHeaders}
         rowKeyName={"ip"}
         style={{ cellTextStyle: styles.tableCell }}
       />
