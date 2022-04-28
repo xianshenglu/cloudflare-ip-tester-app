@@ -5,7 +5,9 @@
     "ip": "IP",
     "lossRate": "丢包率",
     "respondTime": "响应时长",
-    "downloadSpeed": "下载速度"
+    "downloadSpeed": "下载速度",
+    "showAllData": "展示所有数据",
+    "showSortedTop": "展示排序后的前"
   },
   "testRun": {
     "title": "运行测试",

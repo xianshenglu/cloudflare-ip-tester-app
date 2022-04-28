@@ -5,7 +5,9 @@
     "ip": "IP",
     "lossRate": "Loss Rate",
     "respondTime": "Respond Time",
-    "downloadSpeed": "Download Speed"
+    "downloadSpeed": "Download Speed",
+    "showAllData": "Show All Data",
+    "showSortedTop": "Show Sorted Top"
   },
   "testRun": {
     "title": "Test Run",

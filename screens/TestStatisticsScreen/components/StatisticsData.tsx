@@ -94,13 +94,18 @@ function StatisticsDataInternal(props: { rows: CfIpStatistics[] }) {
   }
 
   const { sortType, columnId } = getCurrentSortConf();
+  const [isShowAllData, setIsShowAllData] = useState<boolean>(false);  
+
+  const PERFORMANCE_LIMIT =  50;
+  
   // todo fix the type infer later
   const sortedRows = sortTableData(
     props.rows,
     columnId as `${TestStatisticsTableHeaderCol}`,
     sortType
-  );
-  const [isShowAllHeader, setIsShowAllHeader] = useState<boolean>(false);
+  ).slice(0, isShowAllData? props.rows.length : PERFORMANCE_LIMIT);
+
+  const [isShowAllHeader, setIsShowAllHeader] = useState<boolean>(false);  
 
   let filteredTableHeaders = getFilteredTableHeaders(
     tableHeaders,
@@ -110,14 +115,20 @@ function StatisticsDataInternal(props: { rows: CfIpStatistics[] }) {
   getStoredJson<Record<string, any>>(
     STORAGE_KEY_TEST_STATISTICS_USER_CONFIG,
     {}
-  ).then(({ isShowAllHeader }) => {
+  ).then(({ isShowAllHeader,isShowAllData }) => {
     setIsShowAllHeader(() => !!isShowAllHeader);
+    setIsShowAllData(()=>!!isShowAllData)
   });
 
   function onIsShowAllHeaderChange(isShowAllHeader: boolean) {
     setIsShowAllHeader((isShowAllHeader) => !isShowAllHeader);
     storeJson(STORAGE_KEY_TEST_STATISTICS_USER_CONFIG, { isShowAllHeader });
   }
+  function onIsShowAllDataChange(isShowAllData: boolean) {
+    setIsShowAllData((isShowAllData) => !isShowAllData);
+    storeJson(STORAGE_KEY_TEST_STATISTICS_USER_CONFIG, { isShowAllData });
+  }
+  
   return (
     <View style={styles.getStartedContainer}>
       <View
@@ -130,11 +141,21 @@ function StatisticsDataInternal(props: { rows: CfIpStatistics[] }) {
         <Button
           mode="contained"
           contentStyle={{ marginHorizontal: -5, marginVertical: -2 }}
+          style={{ marginRight: 10 }}
           onPress={() => onIsShowAllHeaderChange(!isShowAllHeader)}
         >
           {isShowAllHeader
             ? I18n.t("testStatistics.hideSomeColumns")
             : I18n.t("testStatistics.showAllColumns")}
+        </Button>
+        <Button
+          mode="contained"
+          contentStyle={{ marginHorizontal: -5, marginVertical: -2 }}
+          onPress={() => onIsShowAllDataChange(!isShowAllData)}
+        >
+          {isShowAllData
+            ? I18n.t("general.showSortedTop") + PERFORMANCE_LIMIT
+            : I18n.t("general.showAllData")}
         </Button>
       </View>
 
