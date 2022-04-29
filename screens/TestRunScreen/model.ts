@@ -74,8 +74,7 @@ export const initialTestPageTableHeaderCols: MyTableHeaderColumn[] = [
       // @ts-ignore
 
       let downloadSpeed = downloadSpeedMap[row.downloadSpeedTestStatus];
-      const result =
-        typeof downloadSpeed === "number" ? downloadSpeed + "MB/S" : "";
+      const result = downloadSpeed;
       return result;
     },
   },
