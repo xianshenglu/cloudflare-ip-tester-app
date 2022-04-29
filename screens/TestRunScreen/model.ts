@@ -31,7 +31,7 @@ export const initialTestPageTableHeaderCols: MyTableHeaderColumn[] = [
   },
   {
     id: "respondTime",
-    label: I18n.t("general.respondTime"),
+    label: I18n.t("general.respondTime") + "(ms)",
     width: 40,
     sort: "default",
     // @ts-ignore
@@ -55,7 +55,7 @@ export const initialTestPageTableHeaderCols: MyTableHeaderColumn[] = [
   },
   {
     id: "downloadSpeed",
-    label: I18n.t("general.downloadSpeed"),
+    label: I18n.t("general.downloadSpeed") + "(MB/s)",
     width: 40,
     sort: "default",
     // @ts-ignore
