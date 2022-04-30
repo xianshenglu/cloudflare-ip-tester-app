@@ -3,10 +3,7 @@ name: Android Build ## name of the workflow
 on:
   push:
     branches:
-      - dev
-
-permissions: 
-  contents: write
+      - '!main'  
 
 jobs:
   android-build:
@@ -56,33 +53,3 @@ jobs:
           alias: ${{ secrets.MYAPP_UPLOAD_KEY_ALIAS }}
           keyStorePassword: ${{ secrets.MYAPP_UPLOAD_STORE_PASSWORD }}
           keyPassword: ${{ secrets.MYAPP_UPLOAD_KEY_PASSWORD }}
-
-      - name: Changelog
-        run: |          
-          git config --local user.email "xianshenglu@qq.com"
-          git config --local user.name "xianshenglu"
-          npm run changelog
-          git push --follow-tags 
-      
-      - name: 'Get Previous tag'
-        id: previous_tag
-        uses: "WyriHaximus/github-action-get-previous-tag@v1"
-        with:
-          fallback: 1.0.0
-      
-      - name: Release        
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{steps.previous_tag.outputs.tag}}
-          files: ${{steps.sign_app.outputs.signedReleaseFile}}
-      
-
-
-      ## Distribute app to Firebase App Distribution for testing / use google play internal track if you have a google play account
-      # - name: upload artifact to Firebase App Distribution
-      #   uses: wzieba/Firebase-Distribution-Github-Action@v1
-      #   with:
-      #     appId: ${{secrets.ANDROID_FIREBASE_APP_ID}}
-      #     token: ${{secrets.ANDROID_FIREBASE_TOKEN}}
-      #     groups: testers
-      #     file: ${{steps.sign_app.outputs.signedReleaseFile}}
