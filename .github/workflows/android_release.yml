@@ -3,7 +3,7 @@ name: Android Build ## name of the workflow
 on:
   push:
     branches:
-      - dev
+      - main
 
 permissions: 
   contents: write
