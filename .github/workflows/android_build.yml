@@ -2,8 +2,9 @@ name: Android Build ## name of the workflow
 
 on:
   push:
+  pull_request:
     branches:
-      - '!main'  
+      - '!main'
 
 jobs:
   android-build:
@@ -41,7 +42,7 @@ jobs:
 
       - name: Generate App APK
         run: |
-          cd android && ./gradlew assembleRelease --no-daemon
+          npm run build:release
 
       ## sign generated apk
       - name: Sign APK
