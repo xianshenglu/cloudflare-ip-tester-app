@@ -1,17 +1,17 @@
 # cloudflare-ip-tester-app
 
 [ENGLISH](./README.MD)
-### Inspired by
+
+### 灵感来源于
 
 - [CloudflareSpeedTest](https://github.com/XIU2/CloudflareSpeedTest)
 - [cloudflare-ip-tester](https://github.com/TulvL/cloudflare-ip-tester)
 
-### Functions
+### 功能
 
-- test cloudflare-ip as many as you want
+- 测试本地网络到 cloudflare 节点的速度
 
-
-- generate a history statistics based on your test results.
+- 根据你的测试结果，生成统计数据，可以排序，得到最好的结果
 
 <div style="display: flex;flex-flow:row wrap;">
     <img src="./assets/images/test-run-min-zh.jpg" height="600">
