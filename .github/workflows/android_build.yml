@@ -2,8 +2,9 @@ name: Android Build ## name of the workflow
 
 on:
   push:
+  pull_request:
     branches:
-      - '!main'  
+      - '!main'
 
 jobs:
   android-build:
