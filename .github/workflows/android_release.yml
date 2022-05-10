@@ -1,4 +1,4 @@
-name: Android Build ## name of the workflow
+name: Android Release ## name of the workflow
 
 on:
   push:
@@ -9,8 +9,8 @@ permissions:
   contents: write
 
 jobs:
-  android-build:
-    name: Android Build
+  android-release:
+    name: Android Release
     runs-on: ubuntu-latest # using ubuntu latest version / or you can use a specific version
 
     steps:
