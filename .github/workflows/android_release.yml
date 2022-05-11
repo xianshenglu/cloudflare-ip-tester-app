@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Check out Git repository # clone the repo to local ci workspace
         uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.PAT_BOT_RELEASE  }}
 
       - name: Set up our JDK environment # setup JDK environment: mandatory as we need to build  android project
         uses: actions/setup-java@v1.4.3
