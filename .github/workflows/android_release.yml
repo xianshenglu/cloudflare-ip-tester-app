@@ -1,15 +1,15 @@
 name: Android Release ## name of the workflow
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types: [closed]
 
 permissions: 
   contents: write
 
 jobs:
   android-release:
+    if: github.event.pull_request.merged == true || github.ref_name == 'main'    
     name: Android Release
     runs-on: ubuntu-latest # using ubuntu latest version / or you can use a specific version
 
@@ -51,13 +51,14 @@ jobs:
       ## sign generated apk
       - name: Sign APK
         id: sign_app
-        uses: r0adkll/sign-android-release@v1
+        uses: iota9star/sign-android-release@v1.0.5
         with:
           releaseDirectory: android/app/build/outputs/apk/release
           signingKeyBase64: ${{ secrets.MYAPP_UPLOAD_STORE_FILE_BASE64 }}
           alias: ${{ secrets.MYAPP_UPLOAD_KEY_ALIAS }}
           keyStorePassword: ${{ secrets.MYAPP_UPLOAD_STORE_PASSWORD }}
           keyPassword: ${{ secrets.MYAPP_UPLOAD_KEY_PASSWORD }}
+          fileRegex: .*apk 
 
       - name: Changelog
         run: |          
@@ -76,12 +77,13 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{steps.previous_tag.outputs.tag}}
+          fail_on_unmatched_files: true
           files: |
-            ${{ steps.sign_app.signedReleaseFile0 }}
-            ${{ steps.sign_app.signedReleaseFile1 }}
-            ${{ steps.sign_app.signedReleaseFile2 }}
-            ${{ steps.sign_app.signedReleaseFile3 }}
-            ${{ steps.sign_app.signedReleaseFile4 }}
+            $GITHUB_WORKSPACE/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[0] }}
+            $GITHUB_WORKSPACE/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[1] }}
+            $GITHUB_WORKSPACE/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[2] }}
+            $GITHUB_WORKSPACE/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[3] }}
+            $GITHUB_WORKSPACE/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[4] }}
       
 
 
