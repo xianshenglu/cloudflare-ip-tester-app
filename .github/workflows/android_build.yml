@@ -47,10 +47,20 @@ jobs:
       ## sign generated apk
       - name: Sign APK
         id: sign_app
-        uses: r0adkll/sign-android-release@v1
+        uses: iota9star/sign-android-release@v1.0.5
         with:
           releaseDirectory: android/app/build/outputs/apk/release
           signingKeyBase64: ${{ secrets.MYAPP_UPLOAD_STORE_FILE_BASE64 }}
           alias: ${{ secrets.MYAPP_UPLOAD_KEY_ALIAS }}
           keyStorePassword: ${{ secrets.MYAPP_UPLOAD_STORE_PASSWORD }}
           keyPassword: ${{ secrets.MYAPP_UPLOAD_KEY_PASSWORD }}
+          fileRegex: .*apk
+
+      - name: test
+        id: test
+        run: |
+          echo "$GITHUB_WORKSPACE/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[0] }}"
+          echo "$GITHUB_WORKSPACE/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[1] }}"
+          echo "$GITHUB_WORKSPACE/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[2] }}"
+          echo "$GITHUB_WORKSPACE/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[3] }}"
+          echo "$GITHUB_WORKSPACE/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[4] }}"
