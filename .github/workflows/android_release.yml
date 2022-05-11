@@ -59,7 +59,19 @@ jobs:
           keyStorePassword: ${{ secrets.MYAPP_UPLOAD_STORE_PASSWORD }}
           keyPassword: ${{ secrets.MYAPP_UPLOAD_KEY_PASSWORD }}
           fileRegex: .*apk 
-
+      
+      - name: Release        
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{steps.previous_tag.outputs.tag}}
+          fail_on_unmatched_files: true
+          files: |
+            ${{ env.GITHUB_WORKSPACE }}/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[0] }}
+            ${{ env.GITHUB_WORKSPACE }}/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[1] }}
+            ${{ env.GITHUB_WORKSPACE }}/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[2] }}
+            ${{ env.GITHUB_WORKSPACE }}/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[3] }}
+            ${{ env.GITHUB_WORKSPACE }}/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[4] }}
+       
       - name: Changelog
         run: |          
           git config --local user.email "xianshenglu@qq.com"
@@ -71,20 +83,7 @@ jobs:
         id: previous_tag
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
         with:
-          fallback: 1.0.0
-      
-      - name: Release        
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{steps.previous_tag.outputs.tag}}
-          fail_on_unmatched_files: true
-          files: |
-            $GITHUB_WORKSPACE/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[0] }}
-            $GITHUB_WORKSPACE/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[1] }}
-            $GITHUB_WORKSPACE/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[2] }}
-            $GITHUB_WORKSPACE/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[3] }}
-            $GITHUB_WORKSPACE/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[4] }}
-      
+          fallback: 1.0.0     
 
 
       ## Distribute app to Firebase App Distribution for testing / use google play internal track if you have a google play account
