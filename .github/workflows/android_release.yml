@@ -1,15 +1,15 @@
 name: Android Release ## name of the workflow
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types: [closed]
 
 permissions: 
   contents: write
 
 jobs:
   android-release:
+    if: github.event.pull_request.merged == true || github.ref_name == 'main'    
     name: Android Release
     runs-on: ubuntu-latest # using ubuntu latest version / or you can use a specific version
 
