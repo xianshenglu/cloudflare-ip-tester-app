@@ -79,11 +79,11 @@ jobs:
           tag_name: ${{steps.previous_tag.outputs.tag}}
           fail_on_unmatched_files: true
           files: |
-            ${{ env.GITHUB_WORKSPACE }}/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[0] }}
-            ${{ env.GITHUB_WORKSPACE }}/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[1] }}
-            ${{ env.GITHUB_WORKSPACE }}/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[2] }}
-            ${{ env.GITHUB_WORKSPACE }}/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[3] }}
-            ${{ env.GITHUB_WORKSPACE }}/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[4] }}
+            ${{ github.workspace }}/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[0] }}
+            ${{ github.workspace }}/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[1] }}
+            ${{ github.workspace }}/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[2] }}
+            ${{ github.workspace }}/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[3] }}
+            ${{ github.workspace }}/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[4] }}
         
 
 
