@@ -1,9 +1,8 @@
 import { getInitialCfIpResponse } from "./../screens/TestRunScreen/utils/index";
 import { RequestStatus } from "@/typings/index";
-import { getRandomItems } from "@/utils/index";
+import { getCfIpV4List, getRandomItems } from "@/utils/index";
 import axios from "axios";
 import { bufferCount, concatMap, from, map, mergeMap } from "rxjs";
-import { CfIpListV4 } from "@/constants/CfIpListV4";
 import urlParse from "url-parse";
 import { round } from "lodash-es";
 import { CfIpResponse } from "@/screens/TestRunScreen/model";
@@ -149,6 +148,6 @@ export const getCfNodesDownloadTestTime = (
   );
 };
 export const getRandomCfIpList = (totalCount: number) => {
-  const ipList = getRandomItems(CfIpListV4, totalCount);
+  const ipList = getRandomItems(getCfIpV4List(), totalCount);
   return ipList;
 };
