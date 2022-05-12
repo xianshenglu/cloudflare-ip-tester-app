@@ -3,11 +3,10 @@ name: Android Build ## name of the workflow
 on:
   push:
   pull_request:
-    branches:
-      - '!main'
 
 jobs:
   android-build:
+    if: ${{ github.ref_name != 'main' }}
     name: Android Build
     runs-on: ubuntu-latest # using ubuntu latest version / or you can use a specific version
 
@@ -59,8 +58,8 @@ jobs:
       - name: test
         id: test
         run: |
-          echo "$GITHUB_WORKSPACE/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[0] }}"
-          echo "$GITHUB_WORKSPACE/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[1] }}"
-          echo "$GITHUB_WORKSPACE/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[2] }}"
-          echo "$GITHUB_WORKSPACE/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[3] }}"
-          echo "$GITHUB_WORKSPACE/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[4] }}"
+          echo "${{ github.workspace }}/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[0] }}"
+          echo "${{ github.workspace }}/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[1] }}"
+          echo "${{ github.workspace }}/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[2] }}"
+          echo "${{ github.workspace }}/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[3] }}"
+          echo "${{ github.workspace }}/${{ fromJson(steps.sign_app.outputs.signedReleaseFiles)[4] }}"
