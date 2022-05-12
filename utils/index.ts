@@ -1,3 +1,5 @@
+import { CfIpV4Text } from "@/constants/CfIpListV4";
+import { Netmask } from "netmask";
 export const getRandomItems = <T extends unknown[]>(
   list: T,
   count: number
@@ -8,4 +10,18 @@ export const getRandomItems = <T extends unknown[]>(
     result.push(list.splice(randomItem, 1)[0]);
   }
   return result as T;
+};
+
+export const getCfIpV4List = () => {
+  const resultList = CfIpV4Text.split("\n")
+    .map((v) => v.trim())
+    .filter((v) => v)
+    .map((ipBlockStr) => {
+      const ipBlock = new Netmask(ipBlockStr);
+      const result: string[] = [];
+      ipBlock.forEach((ip) => result.push(ip));
+      return result;
+    })
+    .flat();
+  return resultList;
 };
