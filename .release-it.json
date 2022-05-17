@@ -1,0 +1,25 @@
+{
+  "git": {
+    "commitMessage": "chore: release v${version}",
+    "tagName": "${version}",
+    "push": true,
+    "requireCleanWorkingDir": false
+  },
+  "github": {
+    "release": true,
+    "assets": ["android/app/build/outputs/apk/release/*signed.apk"]
+  },
+  "npm": {
+    "publish": false
+  },
+  "hooks": {
+    "after:bump": ["npm run changelog", "git add CHANGELOG.md"]
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": "angular",
+      "infile": "CHANGELOG.md",
+      "strictSemVer": true
+    }
+  }
+}
