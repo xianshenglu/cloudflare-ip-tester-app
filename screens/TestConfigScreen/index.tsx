@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-import { Text, View } from "../components/Themed";
+import { Text, View } from "@/components/Themed";
 import { I18n } from "@/localize";
 
 export default function TestConfigScreen() {

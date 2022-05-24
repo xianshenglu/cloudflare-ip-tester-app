@@ -15,7 +15,7 @@ import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import TestRunScreen from "../screens/TestRunScreen/index";
-import ConfigScreen from "../screens/TestConfigScreen";
+import TestConfigScreen from "../screens/TestConfigScreen/index";
 import {
   RootStackParamList,
   RootTabParamList,
@@ -130,7 +130,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="TestConfig"
-        component={ConfigScreen}
+        component={TestConfigScreen}
         options={{
           title: I18n.t("testConfig.title"),
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
