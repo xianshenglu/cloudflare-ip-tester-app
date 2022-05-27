@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 
 import { Text, View } from "@/components/Themed";
 import { Button, Switch } from "react-native-paper";
-import { createAppFolderIfNeeded, initDefaultFilesIfNeeded } from "@/storage";
+import { createAppFolderIfNeeded, initDefaultFilesIfNeeded } from "@/storage/fileAccess";
 import { userSettingsStore, UserSetting } from "@/store/UserSettings";
 import { observer } from "mobx-react";
 import { testStatisticsStore } from "@/store/TestStatistics";

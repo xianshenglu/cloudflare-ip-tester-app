@@ -1,6 +1,6 @@
 import { userSettingsStore } from "@/store/UserSettings";
-import { readFile, STATISTICS_FILEPATH, writeFile } from "./../storage/index";
-import { getStoredJson, storeJson } from "./storage";
+import { readFile, STATISTICS_FILEPATH, writeFile } from "./../storage/fileAccess";
+import { getStoredJson, storeJson } from "@/storage/localStorage";
 import { debounce, round, uniq } from "lodash-es";
 import { RequestStatus } from "./../typings/index";
 import { CfIpResponse } from "@/screens/TestRunScreen/model";

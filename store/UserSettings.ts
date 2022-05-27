@@ -1,5 +1,5 @@
 import { STORAGE_KEY_USER_SETTINGS } from "@/screens/TestStatisticsScreen/components/StatisticsData";
-import { PREFERENCES_FILEPATH, readFile, writeFile } from "@/storage";
+import { PREFERENCES_FILEPATH, readFile, writeFile } from "@/storage/fileAccess";
 import { debounce } from "lodash-es";
 import {
   action,
@@ -9,7 +9,7 @@ import {
   observable,
   reaction,
 } from "mobx";
-import { getStoredJson, storeJson } from "./storage";
+import { getStoredJson, storeJson } from "@/storage/localStorage";
 export type UserSetting = {
   isSaveDataToDevice: boolean;
 };

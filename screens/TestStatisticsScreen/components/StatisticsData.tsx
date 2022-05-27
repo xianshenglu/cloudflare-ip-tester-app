@@ -14,7 +14,7 @@ import { SortType } from "@/typings";
 import { sortByIp, sortByNumber } from "@/utils/sorter";
 import { useState } from "react";
 import { Button } from "react-native-paper";
-import { getStoredJson, storeJson } from "@/store/storage";
+import { getStoredJson, storeJson } from "@/storage/localStorage";
 import { I18n } from "@/localize";
 
 export const STORAGE_KEY_USER_SETTINGS =

@@ -36,7 +36,7 @@ const formatPermRequestResult = (
     hasAllPerms,
   };
 };
-export const requestMultiplePermsIfNeeded = async (permKeys: Permission[]) => {
+const requestMultiplePermsIfNeeded = async (permKeys: Permission[]) => {
   const resultMap = await checkMultiple(permKeys);
   const { hasAllPerms, failedMap } = formatPermRequestResult(resultMap as any);
 
