@@ -52,7 +52,7 @@ const requestMultiplePermsIfNeeded = async (permKeys: Permission[]) => {
   if (newHasAllPerms) {
     return { hasAllPerms: true, reasons: null };
   }
-  return { hasAllPerms: true, reasons: newFailedMap };
+  return { hasAllPerms: false, reasons: newFailedMap };
 };
 export async function createAppFolderIfNeeded() {
   const { hasAllPerms } = await requestMultiplePermsIfNeeded([
