@@ -7,7 +7,8 @@
     "respondTime": "Respond Time",
     "downloadSpeed": "Download Speed",
     "showAllData": "Show All Data",
-    "showSortedTop": "Show Sorted Top"
+    "showSortedTop": "Show Sorted Top",
+    "getPermFailed": "Get Permissions Failed"
   },
   "testRun": {
     "title": "Test Run",
@@ -29,6 +30,8 @@
     "hideSomeColumns": "Hide Some Columns"
   },
   "testConfig": {
-    "title": "Test Config"
+    "title": "Test Config",
+    "clearHistoryStatistics": "Clear history statistics",
+    "saveAllDataToDevice": "Save all data to device"
   }
 }

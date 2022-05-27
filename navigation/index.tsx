@@ -15,7 +15,7 @@ import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import TestRunScreen from "../screens/TestRunScreen/index";
-import ConfigScreen from "../screens/TestConfigScreen";
+import TestConfigScreen from "../screens/TestConfigScreen/index";
 import {
   RootStackParamList,
   RootTabParamList,
@@ -23,7 +23,7 @@ import {
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import TestStatisticsScreen from "@/screens/TestStatisticsScreen";
-import { I18n } from "@/localize";
+import { AppI18n } from "@/localize";
 
 export default function Navigation({
   colorScheme,
@@ -86,7 +86,7 @@ function BottomTabNavigator() {
         name="TestRun"
         component={TestRunScreen}
         options={({ navigation }: RootTabScreenProps<"TestRun">) => ({
-          title: I18n.t("testRun.title"),
+          title: AppI18n.t("testRun.title"),
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
@@ -109,7 +109,7 @@ function BottomTabNavigator() {
         name="TestStatistics"
         component={TestStatisticsScreen}
         options={({ navigation }: RootTabScreenProps<"TestStatistics">) => ({
-          title: I18n.t("testStatistics.title"),
+          title: AppI18n.t("testStatistics.title"),
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
@@ -130,9 +130,9 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="TestConfig"
-        component={ConfigScreen}
+        component={TestConfigScreen}
         options={{
-          title: I18n.t("testConfig.title"),
+          title: AppI18n.t("testConfig.title"),
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />

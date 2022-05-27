@@ -1,8 +1,9 @@
-import { getStoredJson, storeJson } from "./storage";
+import { userSettingsStore } from "@/store/UserSettings";
 import { round } from "lodash-es";
 import { RequestStatus } from "./../typings/index";
 import { CfIpResponse } from "@/screens/TestRunScreen/model";
-import { autorun, makeAutoObservable } from "mobx";
+import { action, computed, makeObservable, observable, reaction } from "mobx";
+import { TestStatisticsStorageSync } from "./TestStatisticsStorageSync";
 export type CfIpSummary = {
   ip: string;
   respondSuccessCount: number;
@@ -22,9 +23,11 @@ export type CfIpStatistics = CfIpSummary & {
   downloadSuccessRate: number;
 };
 export type CfIpStatisticsMap = Record<string, CfIpSummary>;
-const STORAGE_KEY_TEST_STATISTICS = "cf-ip-tester-app__test-statistics";
+
 export class TestStatistics {
-  private statistics: CfIpStatisticsMap = {};
+  readonly statistics: CfIpStatisticsMap = {};
+  private storageSync: TestStatisticsStorageSync;
+
   public get computedRecordList(): CfIpStatistics[] {
     const result = this.getRawRecordList().map((cfIpSummary) => {
       const totalRespondCount =
@@ -57,17 +60,32 @@ export class TestStatistics {
     return result;
   }
   constructor() {
-    makeAutoObservable(this);
-    getStoredJson<CfIpStatisticsMap>(STORAGE_KEY_TEST_STATISTICS, {})
-      .then((statistics) => {
-        this.setStatistics(statistics);
-      })
-      .catch(() => {
-        // avoid throw error
-      });
-    autorun(() => {
-      storeJson(STORAGE_KEY_TEST_STATISTICS, this.statistics);
+    makeObservable(this, {
+      statistics: observable,
+      computedRecordList: computed,
+      changeStatistics: action,
+      addRecord: action,
+      updateRecord: action,
     });
+    this.storageSync = new TestStatisticsStorageSync(this.statistics);
+    this.storageSync
+      .mergedDeviceDataWithStorage()
+      .then((statistics) => {
+        this.changeStatistics(statistics);
+        reaction(
+          () => userSettingsStore.userSetting.isSaveDataToDevice,
+          async (isSaveDataToDevice) => {
+            const statistics = await this.storageSync.changeStoragePlace(
+              isSaveDataToDevice
+            );
+            this.changeStatistics(statistics);
+          },
+          { fireImmediately: true }
+        );
+      })
+      .catch((err) => {
+        console.log(err, "merge statistics failed");
+      });
   }
   isRecordExist(cfIpResponse: CfIpResponse) {
     return !!this.statistics[cfIpResponse.ip];
@@ -110,29 +128,37 @@ export class TestStatistics {
       record.downloadFailCount++;
     }
   }
-  getRecord(ip: string) {
+  private getRecord(ip: string) {
     return this.statistics[ip];
   }
-  getStatistics() {
-    return this.statistics;
+  /**
+   * @description keep the reference to make sure it trackable for other places, especially for TestStatisticsStorageSync. Seems not a good way, except provide vm to TestStatisticsStorageSync
+   */
+  changeStatistics(statistics: CfIpStatisticsMap) {
+    Object.keys(this.statistics).forEach((key) => {
+      delete this.statistics[key];
+    });
+    Object.keys(statistics).forEach((key) => {
+      this.statistics[key] = statistics[key];
+    });
   }
-  setStatistics(statistics: CfIpStatisticsMap) {
-    this.statistics = statistics;
-  }
-  getRawRecordList() {
+  private getRawRecordList() {
     return Object.values(this.statistics);
   }
-  isRecordRespondSuccess(cfIpResponse: CfIpResponse) {
+  private isRecordRespondSuccess(cfIpResponse: CfIpResponse) {
     return cfIpResponse.respondTestStatus === RequestStatus.Success;
   }
-  isRecordRespondFail(cfIpResponse: CfIpResponse) {
+  private isRecordRespondFail(cfIpResponse: CfIpResponse) {
     return cfIpResponse.respondTestStatus === RequestStatus.Error;
   }
-  isRecordDownloadSuccess(cfIpResponse: CfIpResponse) {
+  private isRecordDownloadSuccess(cfIpResponse: CfIpResponse) {
     return cfIpResponse.downloadSpeedTestStatus === RequestStatus.Success;
   }
-  isRecordDownloadFail(cfIpResponse: CfIpResponse) {
+  private isRecordDownloadFail(cfIpResponse: CfIpResponse) {
     return cfIpResponse.downloadSpeedTestStatus === RequestStatus.Error;
+  }
+  public async clear() {
+    await this.storageSync.clear();
   }
 }
 

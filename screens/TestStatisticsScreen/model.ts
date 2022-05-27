@@ -1,4 +1,4 @@
-import { I18n } from "@/localize";
+import { AppI18n } from "@/localize";
 import { round } from "lodash-es";
 import { TableHeaderColumn } from "@/components/Table/TableHeader";
 
@@ -16,16 +16,16 @@ export enum TestStatisticsTableHeaderCol {
 }
 
 export const initialTestStatisticsTableHeaderCols: MyTableHeaderColumn[] = [
-  { id: "ip", label: I18n.t("general.ip"), width: 60, sort: "default" },
+  { id: "ip", label: AppI18n.t("general.ip"), width: 60, sort: "default" },
   {
     id: "totalRespondCount",
-    label: I18n.t("testStatistics.totalRespond"),
+    label: AppI18n.t("testStatistics.totalRespond"),
     width: 25,
     sort: "default",
   },
   {
     id: "respondSuccessRate",
-    label: I18n.t("testStatistics.respondSuccessRate"),
+    label: AppI18n.t("testStatistics.respondSuccessRate"),
     width: 25,
     sort: "default",
     // @ts-ignore
@@ -37,7 +37,7 @@ export const initialTestStatisticsTableHeaderCols: MyTableHeaderColumn[] = [
   },
   {
     id: "meanRespondTime",
-    label: I18n.t("testStatistics.meanRespondTime") + "(s)",
+    label: AppI18n.t("testStatistics.meanRespondTime") + "(s)",
     width: 25,
     sort: "default",
     // @ts-ignore
@@ -49,13 +49,13 @@ export const initialTestStatisticsTableHeaderCols: MyTableHeaderColumn[] = [
   },
   {
     id: "totalDownloadCount",
-    label: I18n.t("testStatistics.totalDownload"),
+    label: AppI18n.t("testStatistics.totalDownload"),
     width: 25,
     sort: "default",
   },
   {
     id: "downloadSuccessRate",
-    label: I18n.t("testStatistics.downloadSuccessRate"),
+    label: AppI18n.t("testStatistics.downloadSuccessRate"),
     width: 25,
     sort: "default",
     // @ts-ignore
@@ -67,7 +67,7 @@ export const initialTestStatisticsTableHeaderCols: MyTableHeaderColumn[] = [
   },
   {
     id: "meanDownloadSpeed",
-    label: I18n.t("testStatistics.meanDownload") + "(MB/s)",
+    label: AppI18n.t("testStatistics.meanDownload") + "(MB/s)",
     width: 25,
     sort: "default",
     // @ts-ignore

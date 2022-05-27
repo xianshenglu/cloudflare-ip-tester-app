@@ -12,7 +12,8 @@
     "build:release": "cd android && ./gradlew assembleRelease --no-daemon",
     "install-on-device": "npx react-native run-android --variant=release",
     "changelog": "auto-changelog",
-    "release": "release-it --ci"
+    "release": "release-it --ci",
+    "devtool": "react-devtools"
   },
   "jest": {
     "preset": "jest-expo"
@@ -36,12 +37,15 @@
     "lodash-es": "^4.17.21",
     "mobx": "^6.5.0",
     "mobx-react": "^7.3.0",
+    "mobx-utils": "^6.0.5",
     "netmask": "^2.0.2",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
+    "react-native-file-access": "^1.7.1",
     "react-native-localize": "^2.2.1",
     "react-native-paper": "^4.12.1",
+    "react-native-permissions": "^3.3.1",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
     "react-native-web": "0.17.1",
@@ -62,6 +66,7 @@
     "conventional-changelog-cli": "^2.2.2",
     "jest": "^26.6.3",
     "jest-expo": "~44.0.1",
+    "react-devtools": "^4.24.6",
     "react-test-renderer": "17.0.1",
     "release-it": "^15.0.0",
     "standard-version": "^9.3.2",
