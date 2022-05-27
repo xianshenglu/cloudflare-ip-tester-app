@@ -7,13 +7,15 @@ import { userSettingsStore, UserSetting } from "@/store/UserSettings";
 import { observer } from "mobx-react";
 import { testStatisticsStore } from "@/store/TestStatistics";
 import { I18n } from "@/localize";
-import { APP_THEME } from "@/theme";
+import { useTheme } from "@react-navigation/native";
 
 export const ConfigList = observer(() => (
   <InternalConfigList userSettings={{ ...userSettingsStore.userSetting }} />
 ));
 function SettingButton(props: { onPress: () => void; label: string }) {
   const { onPress, label } = props;
+  const { colors } = useTheme();
+
   return (
     <View style={styles.item}>
       <Button
@@ -23,7 +25,7 @@ function SettingButton(props: { onPress: () => void; label: string }) {
           width: "100%",
         }}
         labelStyle={{
-          color: "#000",
+          color: colors.text,
           fontFamily: "inherit",
         }}
         contentStyle={{
@@ -50,6 +52,8 @@ function InternalConfigList({ userSettings }: { userSettings: UserSetting }) {
     }
   };
 
+  const { colors } = useTheme();
+
   return (
     <View style={styles.container}>
       <View style={styles.list}>
@@ -58,7 +62,7 @@ function InternalConfigList({ userSettings }: { userSettings: UserSetting }) {
           <Switch
             value={isSaveDataToDevice}
             onValueChange={onToggleSwitch}
-            color={APP_THEME.colors.primary}
+            color={colors.primary}
           ></Switch>
         </View>
         <SettingButton

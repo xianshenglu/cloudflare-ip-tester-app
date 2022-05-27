@@ -6,6 +6,9 @@ export const miniStyle = StyleSheet.create({
     fontSize: 12,
   },
 });
+/**
+ * @todo handle the theme with light/dark
+ */
 export const APP_THEME = {
   ...DefaultTheme,
   colors: {
