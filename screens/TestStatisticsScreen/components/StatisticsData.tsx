@@ -17,7 +17,7 @@ import { Button } from "react-native-paper";
 import { getStoredJson, storeJson } from "@/store/storage";
 import { I18n } from "@/localize";
 
-const STORAGE_KEY_TEST_STATISTICS_USER_CONFIG =
+export const STORAGE_KEY_USER_SETTINGS =
   "STORAGE_KEY_TEST_STATISTICS_USER_CONFIG";
 export const StatisticsData = observer(
   ({ testStatisticsStore }: { testStatisticsStore: TestStatistics }) => (
@@ -113,7 +113,7 @@ function StatisticsDataInternal(props: { rows: CfIpStatistics[] }) {
   );
 
   getStoredJson<Record<string, any>>(
-    STORAGE_KEY_TEST_STATISTICS_USER_CONFIG,
+    STORAGE_KEY_USER_SETTINGS,
     {}
   ).then(({ isShowAllHeader,isShowAllData }) => {
     setIsShowAllHeader(() => !!isShowAllHeader);
@@ -122,11 +122,11 @@ function StatisticsDataInternal(props: { rows: CfIpStatistics[] }) {
 
   function onIsShowAllHeaderChange(isShowAllHeader: boolean) {
     setIsShowAllHeader((isShowAllHeader) => !isShowAllHeader);
-    storeJson(STORAGE_KEY_TEST_STATISTICS_USER_CONFIG, { isShowAllHeader });
+    storeJson(STORAGE_KEY_USER_SETTINGS, { isShowAllHeader });
   }
   function onIsShowAllDataChange(isShowAllData: boolean) {
     setIsShowAllData((isShowAllData) => !isShowAllData);
-    storeJson(STORAGE_KEY_TEST_STATISTICS_USER_CONFIG, { isShowAllData });
+    storeJson(STORAGE_KEY_USER_SETTINGS, { isShowAllData });
   }
   
   return (

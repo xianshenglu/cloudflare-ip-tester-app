@@ -1,8 +1,11 @@
+import { userSettingsStore } from "@/store/UserSettings";
+import { readFile, STATISTICS_FILEPATH, writeFile } from "./../storage/index";
 import { getStoredJson, storeJson } from "./storage";
-import { round } from "lodash-es";
+import { debounce, round, uniq } from "lodash-es";
 import { RequestStatus } from "./../typings/index";
 import { CfIpResponse } from "@/screens/TestRunScreen/model";
-import { autorun, makeAutoObservable } from "mobx";
+import { deepObserve, IDisposer } from "mobx-utils";
+import { action, computed, makeObservable, observable, reaction } from "mobx";
 export type CfIpSummary = {
   ip: string;
   respondSuccessCount: number;
@@ -24,7 +27,11 @@ export type CfIpStatistics = CfIpSummary & {
 export type CfIpStatisticsMap = Record<string, CfIpSummary>;
 const STORAGE_KEY_TEST_STATISTICS = "cf-ip-tester-app__test-statistics";
 export class TestStatistics {
-  private statistics: CfIpStatisticsMap = {};
+  statistics: CfIpStatisticsMap = {};
+  private unsubscribeSaveToLocalStorage: IDisposer | undefined;
+  private unsubscribeSaveToDevice: IDisposer | undefined;
+  private filePath = STATISTICS_FILEPATH;
+
   public get computedRecordList(): CfIpStatistics[] {
     const result = this.getRawRecordList().map((cfIpSummary) => {
       const totalRespondCount =
@@ -57,17 +64,128 @@ export class TestStatistics {
     return result;
   }
   constructor() {
-    makeAutoObservable(this);
-    getStoredJson<CfIpStatisticsMap>(STORAGE_KEY_TEST_STATISTICS, {})
-      .then((statistics) => {
-        this.setStatistics(statistics);
+    makeObservable(this, {
+      statistics: observable,
+      computedRecordList: computed,
+      changeStatistics: action,
+      addRecord: action,
+      updateRecord: action,
+    });
+    this.mergedDeviceDataWithStorage()
+      .catch((err) => {
+        console.log(err, "merge statistics failed");
       })
-      .catch(() => {
-        // avoid throw error
+      .then(() => {
+        reaction(
+          () => userSettingsStore.userSetting.isSaveDataToDevice,
+          this.onSavingDataToDeviceChange.bind(this),
+          { fireImmediately: true }
+        );
       });
-    autorun(() => {
+  }
+  private async onSavingDataToDeviceChange(isSaveDataToDevice: boolean) {
+    if (isSaveDataToDevice) {
+      await this.autoSaveToDevice();
+      this.unsubscribeSaveToLocalStorage?.();
+      this.resetStorageData();
+      return;
+    }
+    this.autoSaveToLocalStorage();
+    this.unsubscribeSaveToDevice?.();
+    this.resetDeviceData();
+  }
+  private async resetDeviceData() {
+    await writeFile(this.filePath, "");
+  }
+  private async resetStorageData() {
+    await storeJson(STORAGE_KEY_TEST_STATISTICS, {});
+  }
+  private autoSaveToLocalStorage() {
+    this.unsubscribeSaveToLocalStorage = deepObserve(this.statistics, () => {
       storeJson(STORAGE_KEY_TEST_STATISTICS, this.statistics);
     });
+  }
+  private async autoSaveToDevice() {
+    await this.mergedDeviceDataWithStorage();
+    this.unsubscribeSaveToDevice = deepObserve(
+      this.statistics,
+      debounce(
+        () => {
+          writeFile(this.filePath, JSON.stringify(this.statistics));
+        },
+        3000,
+        { leading: true, trailing: true, maxWait: 5000 }
+      )
+    );
+  }
+  private async mergedDeviceDataWithStorage() {
+    const deviceData = await this.getDeviceData();
+    const storageData = await getStoredJson<CfIpStatisticsMap>(
+      STORAGE_KEY_TEST_STATISTICS,
+      {}
+    );
+    const statistics = this.getDeviceStorageMergedData(deviceData, storageData);
+
+    this.changeStatistics(statistics);
+  }
+  private getDeviceStorageMergedData(
+    statisticsMapA: CfIpStatisticsMap,
+    statisticsMapB: CfIpStatisticsMap
+  ): CfIpStatisticsMap {
+    const resultMap: CfIpStatisticsMap = {};
+    const uniqueKeys = uniq([
+      ...Object.keys(statisticsMapA),
+      ...Object.keys(statisticsMapB),
+    ]);
+    uniqueKeys.forEach((key) => {
+      const mapAValue = statisticsMapA[key];
+      const mapBValue = statisticsMapB[key];
+      if (!mapAValue) {
+        resultMap[key] = mapBValue;
+        return;
+      }
+      if (!mapBValue) {
+        resultMap[key] = mapAValue;
+        return;
+      }
+      resultMap[key] = this.mergeStatisticsWithSameKeys(mapAValue, mapBValue);
+    });
+    return resultMap;
+  }
+  private mergeStatisticsWithSameKeys(
+    statisticsA: CfIpSummary,
+    statisticsB: CfIpSummary
+  ): CfIpSummary {
+    return {
+      ip: statisticsA.ip,
+      respondSuccessCount:
+        statisticsA.respondSuccessCount + statisticsB.respondSuccessCount,
+      respondFailCount:
+        statisticsA.respondFailCount + statisticsB.respondFailCount,
+      totalRespondTime:
+        statisticsA.totalRespondTime + statisticsB.totalRespondTime,
+      downloadSuccessCount:
+        statisticsA.downloadSuccessCount + statisticsB.downloadSuccessCount,
+      downloadFailCount:
+        statisticsA.downloadFailCount + statisticsB.downloadFailCount,
+      totalDownloadSpeed: round(
+        statisticsA.totalDownloadSpeed + statisticsB.totalDownloadSpeed,
+        4
+      ),
+    };
+  }
+  private async getDeviceData(): Promise<CfIpStatisticsMap> {
+    const jsonStr = await readFile(this.filePath);
+    if (!jsonStr) {
+      return {};
+    }
+    let result = {};
+    try {
+      result = JSON.parse(jsonStr);
+    } catch (error) {
+      return {};
+    }
+    return result;
   }
   isRecordExist(cfIpResponse: CfIpResponse) {
     return !!this.statistics[cfIpResponse.ip];
@@ -110,29 +228,30 @@ export class TestStatistics {
       record.downloadFailCount++;
     }
   }
-  getRecord(ip: string) {
+  private getRecord(ip: string) {
     return this.statistics[ip];
   }
-  getStatistics() {
-    return this.statistics;
-  }
-  setStatistics(statistics: CfIpStatisticsMap) {
+  changeStatistics(statistics: CfIpStatisticsMap) {
     this.statistics = statistics;
   }
-  getRawRecordList() {
+  private getRawRecordList() {
     return Object.values(this.statistics);
   }
-  isRecordRespondSuccess(cfIpResponse: CfIpResponse) {
+  private isRecordRespondSuccess(cfIpResponse: CfIpResponse) {
     return cfIpResponse.respondTestStatus === RequestStatus.Success;
   }
-  isRecordRespondFail(cfIpResponse: CfIpResponse) {
+  private isRecordRespondFail(cfIpResponse: CfIpResponse) {
     return cfIpResponse.respondTestStatus === RequestStatus.Error;
   }
-  isRecordDownloadSuccess(cfIpResponse: CfIpResponse) {
+  private isRecordDownloadSuccess(cfIpResponse: CfIpResponse) {
     return cfIpResponse.downloadSpeedTestStatus === RequestStatus.Success;
   }
-  isRecordDownloadFail(cfIpResponse: CfIpResponse) {
+  private isRecordDownloadFail(cfIpResponse: CfIpResponse) {
     return cfIpResponse.downloadSpeedTestStatus === RequestStatus.Error;
+  }
+  public async clear() {
+    await this.resetDeviceData();
+    await this.resetStorageData();
   }
 }
 

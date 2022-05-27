@@ -7,7 +7,8 @@
     "respondTime": "响应时长",
     "downloadSpeed": "下载速度",
     "showAllData": "展示所有数据",
-    "showSortedTop": "展示排序后的前"
+    "showSortedTop": "展示排序后的前",
+    "getPermFailed": "获取权限失败"
   },
   "testRun": {
     "title": "运行测试",
@@ -29,6 +30,8 @@
     "hideSomeColumns": "隐藏某些列"
   },
   "testConfig": {
-    "title": "测试配置"
+    "title": "测试配置",
+    "clearHistoryStatistics": "清除历史统计数据",
+    "saveAllDataToDevice": "保存数据到设备"
   }
 }
