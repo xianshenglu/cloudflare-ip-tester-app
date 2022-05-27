@@ -23,4 +23,4 @@ I18n.translations = {
   en,
 };
 
-export { I18n };
+export { I18n as AppI18n };

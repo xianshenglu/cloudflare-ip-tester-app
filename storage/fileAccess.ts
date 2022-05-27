@@ -1,4 +1,4 @@
-import { I18n } from "@/localize";
+import { AppI18n } from "@/localize";
 import { Dirs, FileSystem } from "react-native-file-access";
 import {
   checkMultiple,
@@ -60,7 +60,7 @@ export async function createAppFolderIfNeeded() {
     PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
   ]);
   if (!hasAllPerms) {
-    throw new Error(I18n.t("general.getPermFailed"));
+    throw new Error(AppI18n.t("general.getPermFailed"));
   }
   try {
     await FileSystem.mkdir(APP_DIR);

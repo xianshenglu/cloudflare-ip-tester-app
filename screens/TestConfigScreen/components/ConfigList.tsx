@@ -6,7 +6,7 @@ import { createAppFolderIfNeeded, initDefaultFilesIfNeeded } from "@/storage/fil
 import { userSettingsStore, UserSetting } from "@/store/UserSettings";
 import { observer } from "mobx-react";
 import { testStatisticsStore } from "@/store/TestStatistics";
-import { I18n } from "@/localize";
+import { AppI18n } from "@/localize";
 import { useTheme } from "@react-navigation/native";
 
 export const ConfigList = observer(() => (
@@ -58,7 +58,7 @@ function InternalConfigList({ userSettings }: { userSettings: UserSetting }) {
     <View style={styles.container}>
       <View style={styles.list}>
         <View style={styles.item}>
-          <Text>{I18n.t("testConfig.saveAllDataToDevice")}</Text>
+          <Text>{AppI18n.t("testConfig.saveAllDataToDevice")}</Text>
           <Switch
             value={isSaveDataToDevice}
             onValueChange={onToggleSwitch}
@@ -67,7 +67,7 @@ function InternalConfigList({ userSettings }: { userSettings: UserSetting }) {
         </View>
         <SettingButton
           onPress={() => testStatisticsStore.clear()}
-          label={I18n.t("testConfig.clearHistoryStatistics")}
+          label={AppI18n.t("testConfig.clearHistoryStatistics")}
         ></SettingButton>
       </View>
     </View>

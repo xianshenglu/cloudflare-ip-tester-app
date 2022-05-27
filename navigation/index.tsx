@@ -23,7 +23,7 @@ import {
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import TestStatisticsScreen from "@/screens/TestStatisticsScreen";
-import { I18n } from "@/localize";
+import { AppI18n } from "@/localize";
 
 export default function Navigation({
   colorScheme,
@@ -86,7 +86,7 @@ function BottomTabNavigator() {
         name="TestRun"
         component={TestRunScreen}
         options={({ navigation }: RootTabScreenProps<"TestRun">) => ({
-          title: I18n.t("testRun.title"),
+          title: AppI18n.t("testRun.title"),
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
@@ -109,7 +109,7 @@ function BottomTabNavigator() {
         name="TestStatistics"
         component={TestStatisticsScreen}
         options={({ navigation }: RootTabScreenProps<"TestStatistics">) => ({
-          title: I18n.t("testStatistics.title"),
+          title: AppI18n.t("testStatistics.title"),
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
@@ -132,7 +132,7 @@ function BottomTabNavigator() {
         name="TestConfig"
         component={TestConfigScreen}
         options={{
-          title: I18n.t("testConfig.title"),
+          title: AppI18n.t("testConfig.title"),
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />

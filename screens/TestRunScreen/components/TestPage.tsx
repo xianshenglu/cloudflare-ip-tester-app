@@ -12,7 +12,7 @@ import { initialTestPageTableHeaderCols, MyTableHeaderColumn } from "../model";
 import { useTestRunningStatus } from "../hooks/useTestRunningStatus";
 import { miniStyle } from "@/theme";
 import { Button } from "react-native-paper";
-import { I18n } from "@/localize";
+import { AppI18n } from "@/localize";
 export default function TestPage({ path }: { path: string }) {
   const { testIpCount, setTestIpCount, getIpList } = useTestIpCount();
   const [testIpCoCurrentCount, setTestIpCoCurrentCount] = useState<string>("5");
@@ -93,7 +93,7 @@ export default function TestPage({ path }: { path: string }) {
           contentStyle={{ ...styles.paperBtnContent }}
           labelStyle={{ ...miniStyle.textStyle }}
         >
-          {I18n.t("testRun.testRespond")}
+          {AppI18n.t("testRun.testRespond")}
         </Button>
         <View style={{ marginRight: 5 }}></View>
         <Button
@@ -108,7 +108,7 @@ export default function TestPage({ path }: { path: string }) {
           contentStyle={{ ...styles.paperBtnContent }}
           labelStyle={{ ...miniStyle.textStyle }}
         >
-          {I18n.t("testRun.testDownload")}
+          {AppI18n.t("testRun.testDownload")}
         </Button>
         <View style={{ marginRight: 5 }}></View>
 
@@ -118,18 +118,18 @@ export default function TestPage({ path }: { path: string }) {
           contentStyle={{ ...styles.paperBtnContent }}
           labelStyle={{ ...miniStyle.textStyle }}
         >
-          {I18n.t("general.start")}
+          {AppI18n.t("general.start")}
         </Button>
       </View>
       <View style={styles.toolbar}>
-        <Text> {I18n.t("testRun.ipCount")}</Text>
+        <Text> {AppI18n.t("testRun.ipCount")}</Text>
         <TextInput
           style={styles.input}
           onChangeText={onTestIpCountChange}
           value={testIpCount}
           keyboardType="numeric"
         />
-        <Text> {I18n.t("testRun.coCurrentCount")}</Text>
+        <Text> {AppI18n.t("testRun.coCurrentCount")}</Text>
         <TextInput
           style={styles.input}
           onChangeText={(val) => setTestIpCoCurrentCount(() => val)}
@@ -138,7 +138,7 @@ export default function TestPage({ path }: { path: string }) {
         />
       </View>
       <View style={styles.toolbar}>
-        <Text>{I18n.t("testRun.testUrl")}</Text>
+        <Text>{AppI18n.t("testRun.testUrl")}</Text>
         <TextInput
           style={{ ...styles.input, flex: 1 }}
           onChangeText={(val) => setTestUrl(() => val)}

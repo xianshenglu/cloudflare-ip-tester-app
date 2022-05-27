@@ -15,7 +15,7 @@ import { sortByIp, sortByNumber } from "@/utils/sorter";
 import { useState } from "react";
 import { Button } from "react-native-paper";
 import { getStoredJson, storeJson } from "@/storage/localStorage";
-import { I18n } from "@/localize";
+import { AppI18n } from "@/localize";
 
 export const STORAGE_KEY_USER_SETTINGS =
   "STORAGE_KEY_TEST_STATISTICS_USER_CONFIG";
@@ -94,31 +94,30 @@ function StatisticsDataInternal(props: { rows: CfIpStatistics[] }) {
   }
 
   const { sortType, columnId } = getCurrentSortConf();
-  const [isShowAllData, setIsShowAllData] = useState<boolean>(false);  
+  const [isShowAllData, setIsShowAllData] = useState<boolean>(false);
 
-  const PERFORMANCE_LIMIT =  50;
-  
+  const PERFORMANCE_LIMIT = 50;
+
   // todo fix the type infer later
   const sortedRows = sortTableData(
     props.rows,
     columnId as `${TestStatisticsTableHeaderCol}`,
     sortType
-  ).slice(0, isShowAllData? props.rows.length : PERFORMANCE_LIMIT);
+  ).slice(0, isShowAllData ? props.rows.length : PERFORMANCE_LIMIT);
 
-  const [isShowAllHeader, setIsShowAllHeader] = useState<boolean>(false);  
+  const [isShowAllHeader, setIsShowAllHeader] = useState<boolean>(false);
 
   let filteredTableHeaders = getFilteredTableHeaders(
     tableHeaders,
     isShowAllHeader
   );
 
-  getStoredJson<Record<string, any>>(
-    STORAGE_KEY_USER_SETTINGS,
-    {}
-  ).then(({ isShowAllHeader,isShowAllData }) => {
-    setIsShowAllHeader(() => !!isShowAllHeader);
-    setIsShowAllData(()=>!!isShowAllData)
-  });
+  getStoredJson<Record<string, any>>(STORAGE_KEY_USER_SETTINGS, {}).then(
+    ({ isShowAllHeader, isShowAllData }) => {
+      setIsShowAllHeader(() => !!isShowAllHeader);
+      setIsShowAllData(() => !!isShowAllData);
+    }
+  );
 
   function onIsShowAllHeaderChange(isShowAllHeader: boolean) {
     setIsShowAllHeader((isShowAllHeader) => !isShowAllHeader);
@@ -128,7 +127,7 @@ function StatisticsDataInternal(props: { rows: CfIpStatistics[] }) {
     setIsShowAllData((isShowAllData) => !isShowAllData);
     storeJson(STORAGE_KEY_USER_SETTINGS, { isShowAllData });
   }
-  
+
   return (
     <View style={styles.getStartedContainer}>
       <View
@@ -145,8 +144,8 @@ function StatisticsDataInternal(props: { rows: CfIpStatistics[] }) {
           onPress={() => onIsShowAllHeaderChange(!isShowAllHeader)}
         >
           {isShowAllHeader
-            ? I18n.t("testStatistics.hideSomeColumns")
-            : I18n.t("testStatistics.showAllColumns")}
+            ? AppI18n.t("testStatistics.hideSomeColumns")
+            : AppI18n.t("testStatistics.showAllColumns")}
         </Button>
         <Button
           mode="contained"
@@ -154,8 +153,8 @@ function StatisticsDataInternal(props: { rows: CfIpStatistics[] }) {
           onPress={() => onIsShowAllDataChange(!isShowAllData)}
         >
           {isShowAllData
-            ? I18n.t("general.showSortedTop") + PERFORMANCE_LIMIT
-            : I18n.t("general.showAllData")}
+            ? AppI18n.t("general.showSortedTop") + PERFORMANCE_LIMIT
+            : AppI18n.t("general.showAllData")}
         </Button>
       </View>
 
