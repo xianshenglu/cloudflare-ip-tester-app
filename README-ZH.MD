@@ -26,7 +26,7 @@
 
 ### 打赏
 
-如果你觉得这个 app 能帮到你，你可以通过 [Patreon](https://www.patreon.com/xianshenglu) 成为我的赞助商, 也可以通过 [Paypal](paypal.me/xianshenglu) 或者扫描下面二维码打赏。不论多少都可以鼓励我把这个 App 越做越好。
+如果你觉得这个 app 能帮到你，你可以通过 [Paypal](paypal.me/xianshenglu) 或者扫描下面二维码打赏。不论多少都可以鼓励我把这个 App 越做越好。
 
 <img style="width:400px" src="./assets/images/wechat-ali-pay.png"/>
 
