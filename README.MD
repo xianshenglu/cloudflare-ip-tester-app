@@ -1,32 +1,32 @@
 # cloudflare-ip-tester-app
 
-[ENGLISH](./README-EN.MD)
+[中文文档](./README.MD)
 
-### 功能
+### Functions
 
-- 测试本地网络到 cloudflare 节点的速度
-
-- 根据你的测试结果，生成统计数据，可以排序，得到最好的结果
+- test cloudflare-ip as many as you want
+- generate a history statistics based on your test results.
 
 <div style="display: flex;flex-flow:row wrap;">
-    <img src="./assets/images/test-run-min-zh.jpg" height="600">
-    <img src="./assets/images/test-statistics-min-zh.jpg" height="600">
+    <img src="./assets/images/test-run-min.jpg" height="600">
+    <img src="./assets/images/test-statistics-min.jpg" height="600">
 </div>
 
-### 灵感来源于
+### Inspired by
 
 - [CloudflareSpeedTest](https://github.com/XIU2/CloudflareSpeedTest)
 - [cloudflare-ip-tester](https://github.com/TulvL/cloudflare-ip-tester)
 
-### 下载 App
+### Download App
 
-[所有版本](https://github.com/xianshenglu/cloudflare-ip-tester-app/releases)
+[All versions](https://github.com/xianshenglu/cloudflare-ip-tester-app/releases)
 
-如果不知道下载哪一个，就下通用版 `app-universal-release-signed.apk`.
+If you're unsure which version to choose then choose `app-universal-release-signed.apk`.
 
-### 打赏
+### Donations
+
+If you think this app can help you, you could become a backer or sponsor via [Patreon](https://www.patreon.com/xianshenglu), donate via [Paypal](https://www.paypal.me/xianshenglu), or scan below QR code to donate via **Alipay** or **WeChat Pay**. Any amount is welcome. It will encourage me to make this app better and better!
 
 <img style="width:400px" src="./assets/images/wechat-ali-pay.png"/>
-
 
 ### MIT License
