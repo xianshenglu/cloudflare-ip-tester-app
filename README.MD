@@ -25,7 +25,7 @@ If you're unsure which version to choose then choose `app-universal-release-sign
 
 ### Donations
 
-If you think this app can help you, you could become a backer or sponsor via [Patreon](https://www.patreon.com/xianshenglu), donate via [Paypal](https://www.paypal.me/xianshenglu), or scan below QR code to donate via **Alipay** or **WeChat Pay**. Any amount is welcome. It will encourage me to make this app better and better!
+If you think this app can help you, you could donate via [Paypal](https://www.paypal.me/xianshenglu), or scan below QR code to donate via **Alipay** or **WeChat Pay**. Any amount is welcome. It will encourage me to make this app better and better!
 
 <img style="width:400px" src="./assets/images/wechat-ali-pay.png"/>
 
