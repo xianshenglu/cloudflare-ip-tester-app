@@ -1,6 +1,7 @@
 name: Android Release ## name of the workflow
 
 on:
+  workflow_dispatch:
   pull_request:
     types: [closed]
 

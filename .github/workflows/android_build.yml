@@ -1,6 +1,7 @@
 name: Android Build ## name of the workflow
 
 on:
+  workflow_dispatch:
   push:
   pull_request:
 
