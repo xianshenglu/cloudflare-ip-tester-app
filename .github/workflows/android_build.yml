@@ -50,6 +50,8 @@ jobs:
       - name: Generate App APK
         run: |
           npm run build:release
+        env:
+          APP_CENTER_SECRET: ${{ secrets.APP_CENTER_SECRET }}
 
       ## sign generated apk
       - name: Sign APK

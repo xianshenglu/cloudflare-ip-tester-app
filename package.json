@@ -9,8 +9,9 @@
     "eject": "expo eject",
     "test": "jest --watchAll",
     "build": "cd android && gradlew bundleRelease",
-    "build:release": "cd android && ./gradlew assembleRelease --no-daemon",
-    "install-on-device": "npx react-native run-android --variant=release",
+    "prebuild": "ts-node ./gen-app-center-config.ts",
+    "build:release": "npm run prebuild && cd android && ./gradlew assembleRelease --no-daemon",
+    "install-on-device": "npm run prebuild && npx react-native run-android --variant=release",
     "changelog": "auto-changelog",
     "release": "release-it --ci",
     "devtool": "react-devtools"
@@ -24,6 +25,9 @@
     "@react-navigation/bottom-tabs": "^6.0.5",
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/native-stack": "^6.1.0",
+    "appcenter": "4.4.5",
+    "appcenter-analytics": "4.4.5",
+    "appcenter-crashes": "4.4.5",
     "axios": "^0.26.1",
     "expo": "~44.0.0",
     "expo-asset": "~8.4.4",
@@ -70,6 +74,7 @@
     "react-test-renderer": "17.0.1",
     "release-it": "^15.0.0",
     "standard-version": "^9.3.2",
+    "ts-node": "^10.9.1",
     "typescript": "~4.3.5"
   },
   "private": true
