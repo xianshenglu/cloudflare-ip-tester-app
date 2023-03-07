@@ -53,6 +53,7 @@ jobs:
         env:
           APP_CENTER_SECRET: ${{ secrets.APP_CENTER_SECRET }}
           CODE_PUSH_DEPLOYMENT_KEY: ${{ secrets.CODE_PUSH_DEPLOYMENT_KEY }}
+          NODE_ENV: ${{ secrets.NODE_ENV }}
 
       ## sign generated apk
       - name: Sign APK
