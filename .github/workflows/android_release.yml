@@ -58,6 +58,7 @@ jobs:
           npm run build:release
         env:
           APP_CENTER_SECRET: ${{ secrets.APP_CENTER_SECRET }}
+          CODE_PUSH_DEPLOYMENT_KEY: ${{ secrets.CODE_PUSH_DEPLOYMENT_KEY }}
           
       ## sign generated apk
       - name: Sign APK
