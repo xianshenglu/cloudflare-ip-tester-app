@@ -65,6 +65,16 @@ jobs:
           keyPassword: ${{ secrets.MYAPP_UPLOAD_KEY_PASSWORD }}
           fileRegex: .*apk
 
+      - name: Upload artifact to App Center
+        uses: wzieba/AppCenter-Github-Action@v1
+        with:
+          appName: xianshenglu/cloudflare-ip-tester-app
+          token: ${{secrets.APP_CENTER_TOKEN}}
+          group: Collaborators
+          file: android/app/build/outputs/apk/release/app-universal-release.apk
+          notifyTesters: true
+          debug: false
+
       - name: test
         id: test
         run: |
