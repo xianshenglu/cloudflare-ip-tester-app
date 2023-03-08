@@ -6,6 +6,7 @@ buildscript {
         minSdkVersion = 21
         compileSdkVersion = 30
         targetSdkVersion = 30
+        // kotlinVersion = "1.6.0"
     }
     repositories {
         google()
@@ -19,8 +20,14 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
+def REACT_NATIVE_VERSION = new File(['node', '--print',"JSON.parse(require('fs').readFileSync(require.resolve('react-native/package.json'), 'utf-8')).version"].execute(null, rootDir).text.trim())
 
 allprojects {
+    configurations.all {
+     resolutionStrategy {
+            force "com.facebook.react:react-native:" + REACT_NATIVE_VERSION
+        }
+    }
     repositories {
         mavenLocal()
         maven {

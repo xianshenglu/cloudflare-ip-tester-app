@@ -73,3 +73,8 @@ web-build/
 dist/
 
 # @end expo-cli
+
+#secret
+android/app/src/main/assets/appcenter-config.json
+#env
+.env

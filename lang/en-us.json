@@ -33,5 +33,12 @@
     "title": "Test Config",
     "clearHistoryStatistics": "Clear history statistics",
     "saveAllDataToDevice": "Save all data to device"
+  },
+  "update": {
+    "title": "Update available",
+    "optionalUpdateMessage": "An update is available. Would you like to install it?",
+    "optionalInstallButtonLabel": "Install",
+    "optionalIgnoreButtonLabel ": "Ignore",
+    "downloadLatestVersion": "Download latest version"
   }
 }
