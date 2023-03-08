@@ -38,6 +38,7 @@
     "title": "Update available",
     "optionalUpdateMessage": "An update is available. Would you like to install it?",
     "optionalInstallButtonLabel": "Install",
-    "optionalIgnoreButtonLabel ": "Ignore"
+    "optionalIgnoreButtonLabel ": "Ignore",
+    "downloadLatestVersion": "Download latest version"
   }
 }
