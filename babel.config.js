@@ -15,13 +15,12 @@ module.exports = function (api) {
       [
         "module:react-native-dotenv",
         {
-          envName: "CODE_PUSH_DEPLOYMENT_KEY",
           moduleName: "@env",
           path: ".env",
           blocklist: null,
           allowlist: null,
           safe: false,
-          allowUndefined: true,
+          allowUndefined: false,
           verbose: false,
         },
       ],
