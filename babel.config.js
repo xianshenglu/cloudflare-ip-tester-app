@@ -12,6 +12,19 @@ module.exports = function (api) {
           root: ["./"],
         },
       ],
+      [
+        "module:react-native-dotenv",
+        {
+          envName: "CODE_PUSH_DEPLOYMENT_KEY",
+          moduleName: "@env",
+          path: ".env",
+          blocklist: null,
+          allowlist: null,
+          safe: false,
+          allowUndefined: true,
+          verbose: false,
+        },
+      ],
     ],
   };
 };
