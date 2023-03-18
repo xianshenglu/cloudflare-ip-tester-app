@@ -1,5 +1,5 @@
-import { StyleSheet, TextInput } from "react-native";
-import { Text, View } from "@/components/Themed";
+import { StyleSheet } from "react-native";
+import { Text, TextInput, View } from "@/components/Themed";
 import { useEffect, useState } from "react";
 import { responseTestService } from "@/services/ResponseTest.service";
 import { downloadTestService } from "@/services/DownloadTest.service";
@@ -91,7 +91,7 @@ export default function TestPage({ path }: { path: string }) {
           }
           mode="contained"
           contentStyle={{ ...styles.paperBtnContent }}
-          labelStyle={{ ...miniStyle.textStyle }}
+          labelStyle={{ ...miniStyle.textStyle }}          
         >
           {AppI18n.t("testRun.testRespond")}
         </Button>
