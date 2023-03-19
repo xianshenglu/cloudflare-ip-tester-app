@@ -37,9 +37,9 @@ class UserSettings {
               isSaveDataToDevice
             );
             this.changeUserSettings(result);
-          }
-        ),
-          { fireImmediate: true };
+          },
+          { fireImmediately: true }
+        )          
       })
       .catch((err) => {
         console.log(err, "merge user settings failed");
