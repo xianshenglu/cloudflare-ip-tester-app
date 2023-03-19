@@ -5,12 +5,13 @@
 ### 功能
 
 - 测试本地网络到 cloudflare 节点的速度
-
 - 根据你的测试结果，生成统计数据，可以排序，得到最好的结果
+- 自定义 Cloudflare Ipv4 列表。(如果你想一直用自定义的数据，需要开启"保存数据到设备"。) 你也许可以用它来测试其他 CDN 厂商的节点速度，如果你再修改测试地址的话。
 
 <div style="display: flex;flex-flow:row wrap;">
     <img src="./assets/images/test-run-min-zh.jpg" height="600">
     <img src="./assets/images/test-statistics-min-zh.jpg" height="600">
+    <img src="./assets/images/test-config-min-zh.jpg" height="600">
 </div>
 
 ### 灵感来源于
