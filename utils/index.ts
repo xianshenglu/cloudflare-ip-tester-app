@@ -1,4 +1,3 @@
-import { CfIpV4Text } from "@/constants/CfIpListV4";
 import { Netmask } from "netmask";
 export const getRandomItems = <T extends unknown[]>(
   list: T,
@@ -12,7 +11,7 @@ export const getRandomItems = <T extends unknown[]>(
   return result as T;
 };
 
-export const getCfIpV4List = () => {
+export const getCfIpV4List = (CfIpV4Text: string) => {
   const resultList = CfIpV4Text.split("\n")
     .map((v) => v.trim())
     .filter((v) => v)
