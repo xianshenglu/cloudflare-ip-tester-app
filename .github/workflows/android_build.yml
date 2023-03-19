@@ -73,7 +73,7 @@ jobs:
           appName: xianshenglu/cloudflare-ip-tester-app
           token: ${{secrets.APP_CENTER_TOKEN}}
           group: Collaborators
-          file: android/app/build/outputs/apk/release/app-universal-release.apk
+          file: android/app/build/outputs/apk/release/app-universal-release-signed.apk
           notifyTesters: true
           debug: false
 

@@ -4,12 +4,14 @@
 
 ### Functions
 
-- test cloudflare-ip as many as you want
-- generate a history statistics based on your test results.
+- Test cloudflare-ip as many as you want
+- Generate a history statistics based on your test results.
+- Customize Cloudflare Ipv4 list. (Need to enable "Save all data to device" if you want to keep the customization all the time.) You might be able to test other cdn vendors' nodes by changing the Ipv4 list and testUrl.
 
 <div style="display: flex;flex-flow:row wrap;">
     <img src="./assets/images/test-run-min.jpg" height="600">
     <img src="./assets/images/test-statistics-min.jpg" height="600">
+    <img src="./assets/images/test-config-min.jpg" height="600">
 </div>
 
 ### Inspired by

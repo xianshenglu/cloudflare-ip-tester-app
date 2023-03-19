@@ -39,7 +39,7 @@ export function TableHeader(props: {
   };
 
   return (
-    <View style={{ ...tableSharedStyles.tableHeader }}>
+    <View style={{ ...tableSharedStyles.tableHeader }} lightColor="#e6f6fa">
       {cols.map((column) => {
         return (
           <Pressable
@@ -76,7 +76,6 @@ export const styles = StyleSheet.create({
     alignSelf: "stretch",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#e6f6fa",
   },
   tableHeaderCellText: {
     lineHeight: 18,

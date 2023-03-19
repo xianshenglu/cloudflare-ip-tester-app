@@ -1,5 +1,6 @@
+import useIsDarkMode from "@/hooks/userIsDarkMode";
 import { AppI18n } from "@/localize";
-import { APP_THEME } from "@/theme";
+import { getAppTheme } from "@/theme";
 import { StatusBar } from "expo-status-bar";
 import { Platform, StyleSheet, Linking, Pressable } from "react-native";
 
@@ -8,6 +9,7 @@ import { Text, View } from "../components/Themed";
 export default function ModalScreen() {
   const latestVersionUrl =
     "https://github.com/xianshenglu/cloudflare-ip-tester-app/releases/latest/download/app-universal-release-signed.apk";
+  const isDark = useIsDarkMode()
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Help</Text>
@@ -18,7 +20,7 @@ export default function ModalScreen() {
       />
       {/* <TestPage path="/screens/ModalScreen.tsx" /> */}
       <Pressable onPress={() => Linking.openURL(latestVersionUrl)}>
-        <Text style={{ color: APP_THEME.colors.primary, fontSize: 16 }}>
+        <Text style={{ color: getAppTheme(isDark).colors.primary, fontSize: 16 }}>
           {AppI18n.t("update.downloadLatestVersion")}
         </Text>
       </Pressable>

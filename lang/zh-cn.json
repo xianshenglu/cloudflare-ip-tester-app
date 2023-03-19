@@ -8,7 +8,10 @@
     "downloadSpeed": "下载速度",
     "showAllData": "展示所有数据",
     "showSortedTop": "展示排序后的前",
-    "getPermFailed": "获取权限失败"
+    "getPermFailed": "获取权限失败",
+    "cancel": "取消",
+    "confirm": "确定",
+    "reset": "重置"
   },
   "testRun": {
     "title": "运行测试",
@@ -32,13 +35,16 @@
   "testConfig": {
     "title": "测试配置",
     "clearHistoryStatistics": "清除历史统计数据",
-    "saveAllDataToDevice": "保存数据到设备"
+    "saveAllDataToDevice": "保存数据到设备",
+    "customizeCfIpv4List": "自定义 Cloudflare Ipv4 列表"
   },
   "update": {
     "title": "发现新版本",
     "optionalUpdateMessage": "有新版本可用，你想安装吗？",
     "optionalInstallButtonLabel": "安装",
     "optionalIgnoreButtonLabel": "忽略",
-    "downloadLatestVersion": "下载最新版本"
+    "downloadLatestVersion": "下载最新版本",
+    "mandatoryUpdateMessage": "有个必须要安装的更新。",
+    "mandatoryContinueButtonLabel": "继续"
   }
 }

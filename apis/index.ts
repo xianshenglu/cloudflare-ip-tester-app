@@ -1,3 +1,4 @@
+import { userSettingsStore } from '@/store/UserSettings';
 import { getInitialCfIpResponse } from "./../screens/TestRunScreen/utils/index";
 import { RequestStatus } from "@/typings/index";
 import { getCfIpV4List, getRandomItems } from "@/utils/index";
@@ -148,6 +149,6 @@ export const getCfNodesDownloadTestTime = (
   );
 };
 export const getRandomCfIpList = (totalCount: number) => {
-  const ipList = getRandomItems(getCfIpV4List(), totalCount);
+  const ipList = getRandomItems(getCfIpV4List(userSettingsStore.getCurIpv4ListText()), totalCount);
   return ipList;
 };

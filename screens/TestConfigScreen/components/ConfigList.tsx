@@ -8,37 +8,13 @@ import { observer } from "mobx-react";
 import { testStatisticsStore } from "@/store/TestStatistics";
 import { AppI18n } from "@/localize";
 import { useTheme } from "@react-navigation/native";
+import { CfIpv4CustomizeDialog } from "./CfIpv4CustomizeDialog";
+import { SettingButton } from "./SettingButton";
 
 export const ConfigList = observer(() => (
   <InternalConfigList userSettings={{ ...userSettingsStore.userSetting }} />
 ));
-function SettingButton(props: { onPress: () => void; label: string }) {
-  const { onPress, label } = props;
-  const { colors } = useTheme();
 
-  return (
-    <View style={styles.item}>
-      <Button
-        mode="text"
-        uppercase={false}
-        style={{
-          width: "100%",
-        }}
-        labelStyle={{
-          color: colors.text,
-          fontFamily: "inherit",
-        }}
-        contentStyle={{
-          marginLeft: -16,
-          alignSelf: "flex-start",
-        }}
-        onPress={onPress}
-      >
-        {label}
-      </Button>
-    </View>
-  );
-}
 function InternalConfigList({ userSettings }: { userSettings: UserSetting }) {
   const { isSaveDataToDevice } = userSettings;
 
@@ -69,6 +45,7 @@ function InternalConfigList({ userSettings }: { userSettings: UserSetting }) {
           onPress={() => testStatisticsStore.clear()}
           label={AppI18n.t("testConfig.clearHistoryStatistics")}
         ></SettingButton>
+        <CfIpv4CustomizeDialog></CfIpv4CustomizeDialog>
       </View>
     </View>
   );

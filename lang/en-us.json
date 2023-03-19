@@ -8,7 +8,10 @@
     "downloadSpeed": "Download Speed",
     "showAllData": "Show All Data",
     "showSortedTop": "Show Sorted Top",
-    "getPermFailed": "Get Permissions Failed"
+    "getPermFailed": "Get Permissions Failed",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "reset": "Reset"
   },
   "testRun": {
     "title": "Test Run",
@@ -32,13 +35,16 @@
   "testConfig": {
     "title": "Test Config",
     "clearHistoryStatistics": "Clear history statistics",
-    "saveAllDataToDevice": "Save all data to device"
+    "saveAllDataToDevice": "Save all data to device",
+    "customizeCfIpv4List": "Customize Cloudflare Ipv4 list"
   },
   "update": {
     "title": "Update available",
     "optionalUpdateMessage": "An update is available. Would you like to install it?",
     "optionalInstallButtonLabel": "Install",
     "optionalIgnoreButtonLabel ": "Ignore",
-    "downloadLatestVersion": "Download latest version"
+    "downloadLatestVersion": "Download latest version",
+    "mandatoryUpdateMessage": "An update is available that must be installed.",
+    "mandatoryContinueButtonLabel": "Continue"
   }
 }
