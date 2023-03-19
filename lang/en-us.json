@@ -43,6 +43,8 @@
     "optionalUpdateMessage": "An update is available. Would you like to install it?",
     "optionalInstallButtonLabel": "Install",
     "optionalIgnoreButtonLabel ": "Ignore",
-    "downloadLatestVersion": "Download latest version"
+    "downloadLatestVersion": "Download latest version",
+    "mandatoryUpdateMessage": "An update is available that must be installed.",
+    "mandatoryContinueButtonLabel": "Continue"
   }
 }

@@ -43,6 +43,8 @@
     "optionalUpdateMessage": "有新版本可用，你想安装吗？",
     "optionalInstallButtonLabel": "安装",
     "optionalIgnoreButtonLabel": "忽略",
-    "downloadLatestVersion": "下载最新版本"
+    "downloadLatestVersion": "下载最新版本",
+    "mandatoryUpdateMessage": "有个必须要安装的更新。",
+    "mandatoryContinueButtonLabel": "继续"
   }
 }
