@@ -1,6 +1,6 @@
 {
   "name": "cloudflare-ip-tester-app",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "scripts": {
     "start": "expo start --dev-client",
     "android": "expo run:android",
